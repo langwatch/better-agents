@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discord Community
+    url: https://discord.gg/langwatch
+    about: Join our Discord community for discussions and help
+  - name: 📖 Documentation
+    url: https://github.com/langwatch/better-agents/tree/main/docs
+    about: Check our documentation for guides and API reference
+  - name: 🐛 Security Issues
+    url: https://github.com/langwatch/better-agents/security/advisories/new
+    about: Report security vulnerabilities privately

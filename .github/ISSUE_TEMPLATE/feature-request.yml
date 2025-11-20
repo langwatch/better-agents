@@ -1,0 +1,90 @@
+name: "✨ Feature Request"
+description: "Suggest a new feature or enhancement"
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+projects: [5]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Your ideas help make better-agents better for everyone.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Feature Summary"
+      description: "Provide a brief summary of the feature you'd like to see."
+      placeholder: "A short description of what you want to add or change."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem/Use Case"
+      description: "What problem does this feature solve? What's the use case?"
+      placeholder: "Describe the problem this feature would address or the use case it enables."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Proposed Solution"
+      description: "Describe how you envision this feature working."
+      placeholder: "How would this feature work? What would the user experience be like?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternative Solutions"
+      description: "Have you considered any alternative approaches?"
+      placeholder: "Describe any alternative solutions or features you've considered."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priority"
+      description: "How important is this feature to you?"
+      multiple: false
+      options:
+        - "Nice to have"
+        - "Would be helpful"
+        - "Important for my use case"
+        - "Critical/Blocking"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: "Estimated Complexity"
+      description: "How complex do you think this feature would be to implement?"
+      multiple: false
+      options:
+        - "Simple (small change)"
+        - "Medium (moderate changes)"
+        - "Complex (significant changes)"
+        - "Very Complex (architectural changes)"
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Additional Context"
+      description: "Any additional context, screenshots, or examples."
+      placeholder: "Add any other context or examples about the feature request here."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      description: "Please check all that apply:"
+      options:
+        - label: "I have searched for existing feature requests to avoid duplicates"
+          required: true
+        - label: "This feature would benefit other users, not just me"
+        - label: "I am willing to help implement this feature"
+        - label: "I can provide more details if needed"

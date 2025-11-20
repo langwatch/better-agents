@@ -1,0 +1,91 @@
+name: "❓ Question/Support"
+description: "Ask a question or request help"
+title: "[Question]: "
+labels: ["question", "triage"]
+projects: [5]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about better-agents? Need help getting started or troubleshooting? Ask away!
+
+        **Note:** If you found a bug or want to suggest a feature, please use the appropriate issue templates instead.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Question Category"
+      description: "What type of question do you have?"
+      multiple: false
+      options:
+        - "Getting Started / Setup"
+        - "Usage / How-to"
+        - "Configuration"
+        - "Troubleshooting"
+        - "Integration"
+        - "Best Practices"
+        - "General"
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: "Your Question"
+      description: "What would you like to know?"
+      placeholder: "Please provide a clear and detailed question."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Context"
+      description: "Provide context about your situation."
+      placeholder: |
+        - What are you trying to accomplish?
+        - What have you tried so far?
+        - What's your environment/setup?
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-example
+    attributes:
+      label: "Code Example (if applicable)"
+      description: "Share any relevant code snippets or configuration."
+      placeholder: "```typescript\n// Your code here\n```"
+      render: markdown
+
+  - type: input
+    id: cli-version
+    attributes:
+      label: "better-agents Version"
+      description: "What version of better-agents are you using?"
+      placeholder: "v1.0.0"
+
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "Your environment details (OS, Node version, etc.)"
+      placeholder: "macOS 14.0, Node.js v18.17.0"
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: "Additional Information"
+      description: "Any other information that might be helpful."
+      placeholder: "Logs, error messages, screenshots, etc."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      description: "Please check all that apply:"
+      options:
+        - label: "I have searched existing questions/issues to avoid duplicates"
+          required: true
+        - label: "I have checked the documentation for answers"
+        - label: "This is not a bug report or feature request"

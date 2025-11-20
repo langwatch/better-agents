@@ -1,0 +1,78 @@
+name: "📚 Documentation Issue"
+description: "Report issues with documentation"
+title: "[Docs]: "
+labels: ["documentation", "triage"]
+projects: [5]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve our documentation! Please report any issues, missing information, or unclear content.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: "Documentation Issue Type"
+      description: "What type of documentation issue is this?"
+      multiple: false
+      options:
+        - "Missing documentation"
+        - "Outdated information"
+        - "Unclear or confusing content"
+        - "Incorrect information"
+        - "Formatting/typo"
+        - "Broken links"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: page-url
+    attributes:
+      label: "Page URL"
+      description: "The URL of the documentation page (if applicable)"
+      placeholder: "https://github.com/your-org/better-agents/docs/..."
+
+  - type: input
+    id: section
+    attributes:
+      label: "Section/File"
+      description: "Which section or file has the issue?"
+      placeholder: "GETTING-STARTED.md, Installation section, etc."
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: "Describe the documentation issue in detail."
+      placeholder: "What's wrong with the documentation? What should be changed?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-fix
+    attributes:
+      label: "Suggested Fix"
+      description: "How would you fix this documentation issue?"
+      placeholder: "Provide your suggested changes or improvements."
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Additional Context"
+      description: "Any additional context about this documentation issue."
+      placeholder: "When did you encounter this? What were you trying to do?"
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      description: "Please check all that apply:"
+      options:
+        - label: "I have searched existing documentation issues to avoid duplicates"
+          required: true
+        - label: "The issue is with official documentation (not user-generated content)"
+        - label: "I am willing to help fix this documentation issue"
