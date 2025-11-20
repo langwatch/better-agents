@@ -5,6 +5,13 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4-beta.0](https://github.com/langwatch/better-agents/compare/v0.1.3-beta.0...v0.1.4-beta.0) (2025-11-20)
+
+
+### Features
+
+* add markdown issue templates and enforce conventional commits ([#25](https://github.com/langwatch/better-agents/issues/25)) ([b03bd02](https://github.com/langwatch/better-agents/commit/b03bd0224c032a4f863cf54d07e7857d55febc33)), closes [#23](https://github.com/langwatch/better-agents/issues/23)
+
 ## [0.1.3-beta.0](https://github.com/langwatch/better-agents/compare/v0.1.2-beta.0...v0.1.3-beta.0) (2025-11-20)
 
 
