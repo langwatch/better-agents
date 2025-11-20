@@ -5,6 +5,13 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2-beta.0](https://github.com/langwatch/better-agents/compare/v0.1.1-beta.0...v0.1.2-beta.0) (2025-11-20)
+
+
+### Bug Fixes
+
+* resolve pnpm version mismatch in publish workflow ([c279fb7](https://github.com/langwatch/better-agents/commit/c279fb7e1c80d940e3b3af88e7b371d5f8df0c43))
+
 ## [0.1.1-beta.0](https://github.com/langwatch/better-agents/compare/v0.1.0-beta.0...v0.1.1-beta.0) (2025-11-18)
 
 
