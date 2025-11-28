@@ -5,6 +5,24 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5-beta.0](https://github.com/langwatch/better-agents/compare/v0.1.4-beta.0...v0.1.5-beta.0) (2025-11-28)
+
+
+### Features
+
+* agno changes ([#30](https://github.com/langwatch/better-agents/issues/30)) ([f464553](https://github.com/langwatch/better-agents/commit/f4645535d5fef2ce9fab14606a7bb3997a3853e4))
+
+
+### Bug Fixes
+
+* add id-token write permission to release-please workflow ([4ddc0e9](https://github.com/langwatch/better-agents/commit/4ddc0e9beb4aad28f1c703a2300277eeb7668530))
+* clearer prompt separation ([109e7bf](https://github.com/langwatch/better-agents/commit/109e7bf68312a7a8a2411ee6fc6bb8929220f2c6))
+
+
+### Miscellaneous
+
+* enhance publish workflow with permissions and OIDC ([9ee81c3](https://github.com/langwatch/better-agents/commit/9ee81c347c8c1987e123cd8672d752be75736e8a))
+
 ## [0.1.4-beta.0](https://github.com/langwatch/better-agents/compare/v0.1.3-beta.0...v0.1.4-beta.0) (2025-11-20)
 
 
