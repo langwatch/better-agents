@@ -6,11 +6,16 @@ import { NoneCodingAssistantProvider } from "./none/index.js";
 export type MCPConfigFile = {
   mcpServers: Record<
     string,
-    {
-      command: string;
-      args?: string[];
-      type?: string;
-    }
+    | {
+        type?: "stdio";
+        command: string;
+        args?: string[];
+      }
+    | {
+        type: "http";
+        transport: string;
+        url: string;
+      }
   >;
 };
 

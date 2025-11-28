@@ -2,11 +2,17 @@ import type { ProgrammingLanguage } from "../../types.js";
 import { AgnoFrameworkProvider } from "./agno/index.js";
 import { MastraFrameworkProvider } from "./mastra/index.js";
 
-export type MCPServerConfig = {
-  type?: string;
-  command: string;
-  args: string[];
-};
+export type MCPServerConfig =
+  | {
+      type?: "stdio";
+      command: string;
+      args: string[];
+    }
+  | {
+      type: "http";
+      transport: string;
+      url: string;
+    };
 
 export type FrameworkKnowledge = {
   /** Prompt instruction for setup tooling (e.g. "TypeScript w/pnpm + vitest") */

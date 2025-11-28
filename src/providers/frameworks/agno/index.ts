@@ -1,6 +1,7 @@
 import type { FrameworkProvider } from "../index.js";
 import { getKnowledge } from "./knowledge.js";
 import { setup } from "./setup.js";
+import { getMCPConfig } from "./mcp-config.js";
 
 /**
  * Agno framework provider implementation.
@@ -12,7 +13,7 @@ export const AgnoFrameworkProvider: FrameworkProvider = {
   language: "python",
 
   getKnowledge,
-  getMCPConfig: () => null,
+  getMCPConfig,
   setup,
 };
 
