@@ -14,7 +14,8 @@ import type { ProjectConfig } from '../../types.js';
  */
 export const buildWorkflowSection = ({ config }: { config: ProjectConfig }): string => {
   const srcDir = config.framework === 'mastra' ? 'src' : 'app';
-  const ext = config.language === 'python' ? 'py' : 'ts';
+  const scenarioPattern =
+    config.language === 'python' ? 'test_*.py' : '*.test.ts';
 
   return `## Project Structure
 
@@ -28,7 +29,7 @@ This project follows a standardized structure for production-ready agents:
 |_____ evaluations/   # Jupyter notebooks for component evaluation
 |________ *.ipynb
 |_____ scenarios/     # End-to-end scenario tests
-|________ *.test.${ext}
+|________ ${scenarioPattern}
 |__ prompts.json      # Prompt registry
 |__ .env              # Environment variables (never commit!)
 \`\`\`

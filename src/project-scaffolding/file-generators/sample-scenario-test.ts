@@ -22,7 +22,10 @@ export const generateSampleScenario = async ({
   projectPath: string;
   language: ProgrammingLanguage;
 }): Promise<void> => {
-  const ext = language === "python" ? "py" : "ts";
+  const fileName =
+    language === "python"
+      ? "test_example_scenario.py"
+      : "example_scenario.test.ts";
   const sampleScenarioContent =
     language === "python"
       ? `"""
@@ -47,7 +50,7 @@ Follow the Agent Testing Pyramid: use Scenario for end-to-end agentic tests.
       projectPath,
       "tests",
       "scenarios",
-      `example_scenario.test.${ext}`
+      fileName
     ),
     sampleScenarioContent
   );
