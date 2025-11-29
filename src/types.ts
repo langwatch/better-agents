@@ -1,5 +1,5 @@
 export type ProgrammingLanguage = 'python' | 'typescript';
-export type AgentFramework = 'agno' | 'mastra';
+export type AgentFramework = 'agno' | 'mastra' | 'langchain';
 export type CodingAssistant = 'claude-code' | 'cursor' | 'kilocode' | 'none';
 export type LLMProvider = 'openai' | 'anthropic' | 'gemini' | 'bedrock' | 'openrouter' | 'grok';
 

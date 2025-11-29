@@ -99,7 +99,7 @@ The MCP will provide up-to-date documentation and examples.
 - **Scenario Documentation**: https://scenario.langwatch.ai/
 - **Agent Testing Pyramid**: https://scenario.langwatch.ai/best-practices/the-agent-testing-pyramid
 - **LangWatch Dashboard**: https://app.langwatch.ai/
-${config.framework === 'agno' ? '- **Agno Documentation**: https://docs.agno.com/' : '- **Mastra Documentation**: Use the Mastra MCP for up-to-date docs'}
+${config.framework === 'agno' ? '- **Agno Documentation**: https://docs.agno.com/' : config.framework === 'langchain' ? '- **Langchain Documentation**: Use the Langchain MCP for up-to-date docs' : '- **Mastra Documentation**: Use the Mastra MCP for up-to-date docs'}
 
 ---
 

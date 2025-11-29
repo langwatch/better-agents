@@ -21,7 +21,7 @@ export const buildOverviewSection = ({ config }: { config: ProjectConfig }): str
 
 **Goal:** ${projectGoal}
 
-**Framework:** ${framework === 'agno' ? 'Agno' : 'Mastra'}
+**Framework:** ${framework === 'agno' ? 'Agno' : framework === 'langchain' ? 'Langchain' : 'Mastra'}
 **Language:** ${language === 'python' ? 'Python' : 'TypeScript'}
 
 This project follows LangWatch best practices for building production-ready AI agents.
