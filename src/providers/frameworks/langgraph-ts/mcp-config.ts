@@ -1,7 +1,7 @@
 import type { MCPServerConfig } from "../index.js";
 
 /**
- * Returns Langchain MCP server configuration.
+ * Returns LangGraph TypeScript MCP server configuration.
  *
  * @returns MCP server configuration object
  *
@@ -12,14 +12,14 @@ import type { MCPServerConfig } from "../index.js";
  */
 export const getMCPConfig = (): MCPServerConfig => ({
   type: "stdio",
-  command: "uvx",
+  command: "npx",
   args: [
-    "--from",
-    "mcpdoc",
+    "-y",
     "mcpdoc",
     "--urls",
-    "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt LangChain:https://python.langchain.com/llms.txt",
+    "LangGraphJS:https://langchain-ai.github.io/langgraphjs/llms.txt LangChainJS:https://js.langchain.com/llms.txt",
     "--transport",
-    "stdio"
+    "stdio",
   ],
 });
+

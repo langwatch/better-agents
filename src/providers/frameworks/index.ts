@@ -1,7 +1,8 @@
 import type { ProgrammingLanguage } from "../../types.js";
 import { AgnoFrameworkProvider } from "./agno/index.js";
 import { MastraFrameworkProvider } from "./mastra/index.js";
-import { LangchainFrameworkProvider } from "./langchain/index.js";
+import { LangGraphPyFrameworkProvider } from "./langgraph-py/index.js";
+import { LangGraphTSFrameworkProvider } from "./langgraph-ts/index.js";
 
 export type MCPServerConfig =
   | {
@@ -56,7 +57,8 @@ export interface FrameworkProvider {
 const PROVIDERS: Record<string, FrameworkProvider> = {
   agno: AgnoFrameworkProvider,
   mastra: MastraFrameworkProvider,
-  langchain: LangchainFrameworkProvider
+  "langgraph-py": LangGraphPyFrameworkProvider,
+  "langgraph-ts": LangGraphTSFrameworkProvider,
 };
 
 /**
