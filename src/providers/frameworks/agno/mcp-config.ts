@@ -2,6 +2,7 @@ import type { MCPServerConfig } from "../index.js";
 
 /**
  * Returns Agno MCP server configuration pointing to the hosted docs server.
+ * Uses mcp-remote proxy to connect Cursor to the HTTP-based MCP server.
  *
  * @returns MCP server configuration object
  *
@@ -11,9 +12,9 @@ import type { MCPServerConfig } from "../index.js";
  * ```
  */
 export const getMCPConfig = (): MCPServerConfig => ({
-  type: "http",
-  transport: "streamable-http",
-  url: "https://docs.agno.com/mcp",
+  type: "stdio",
+  command: "npx",
+  args: ["-y", "mcp-remote", "https://docs.agno.com/mcp"],
 });
 
 
