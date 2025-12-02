@@ -5,6 +5,19 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.17](https://github.com/langwatch/better-agents/compare/v0.1.5-beta.0...v0.1.17) (2025-12-02)
+
+
+### Bug Fixes
+
+* contruction of agents.md ([#35](https://github.com/langwatch/better-agents/issues/35)) ([57c5cbf](https://github.com/langwatch/better-agents/commit/57c5cbfca3a03109a904196d49646ea723c33b65))
+* langgraph+ agno fix ([#32](https://github.com/langwatch/better-agents/issues/32)) ([fbab813](https://github.com/langwatch/better-agents/commit/fbab81348562b84a5646bde1ce8598d4bab8850f))
+
+
+### Miscellaneous
+
+* release 0.1.17 ([6132e61](https://github.com/langwatch/better-agents/commit/6132e61d6b9d7c6b4f7925441783fe9632a31db7))
+
 ## [0.1.5-beta.0](https://github.com/langwatch/better-agents/compare/v0.1.4-beta.0...v0.1.5-beta.0) (2025-11-28)
 
 
