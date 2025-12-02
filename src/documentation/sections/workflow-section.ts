@@ -70,7 +70,7 @@ This project follows a standardized structure for production-ready agents:
 The LangWatch MCP server provides expert guidance on:
 
 - Prompt management with Prompt CLI
-- Writing and maintaining Scenario tests (use langwatch mcp to learn)
+- Writing and maintaining Scenario tests (use LangWatch MCP to learn)
 - Creating evaluations
 - Best practices for agent development
 
