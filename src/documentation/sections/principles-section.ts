@@ -13,7 +13,7 @@ export const buildPrinciplesSection = (): string => {
 
 ### 1. Scenario Agent Testing
 
-Scenario allows for end-to-end validation of multi-turn conversations and real-world scenarios. Most agent functionality should be tested with Scenario tests, and these MUST be created and maintained strictly using the LangWatch MCP (do not access external Scenario tools or docs directly).
+Scenario allows for end-to-end validation of multi-turn conversations and real-world scenarios. Most agent functionality should be tested with Scenario tests, and these MUST be created and maintained strictly using the LangWatch MCP (do not access external Scenario docs).
 
 **CRITICAL**: Every new agent feature MUST be tested with Scenario tests (use LangWatch MCP to access the docs) before considering it complete.
 
