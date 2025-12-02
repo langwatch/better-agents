@@ -5,6 +5,20 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.18](https://github.com/langwatch/better-agents/compare/v0.1.17...v0.1.18) (2025-12-02)
+
+
+### Features
+
+* ensure .gitignore has .better-agents after framework setup ([36d5abd](https://github.com/langwatch/better-agents/commit/36d5abda2d59742df74c1ebfd2de0b4d8dfcb5de))
+* improve coding assistant launch instructions ([3414417](https://github.com/langwatch/better-agents/commit/34144174616248f9bee26e3008c33bcab5304262))
+* lots of DX improvements ([#37](https://github.com/langwatch/better-agents/issues/37)) ([2e7087f](https://github.com/langwatch/better-agents/commit/2e7087f4cc0038de37e1e3af0e03aed60b5ac1f9))
+
+
+### Miscellaneous
+
+* update issue templates ([fe7e518](https://github.com/langwatch/better-agents/commit/fe7e5183ad7da458ff80e11cef9a8f62e28fabab))
+
 ## [0.1.17](https://github.com/langwatch/better-agents/compare/v0.1.5-beta.0...v0.1.17) (2025-12-02)
 
 
