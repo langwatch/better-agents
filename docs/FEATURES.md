@@ -2,7 +2,7 @@
 
 ## 🎯 Framework Integration
 
-- **Agno**: Automatically downloads `.cursorrules` and `llms.txt`
+- **Agno**: Configures Agno MCP for real-time documentation
 - **Mastra**: Configures Mastra MCP for real-time documentation
 
 ## 🧪 LangWatch Integration

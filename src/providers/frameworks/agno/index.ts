@@ -5,7 +5,7 @@ import { getMCPConfig } from "./mcp-config.js";
 
 /**
  * Agno framework provider implementation.
- * Provides Python-based agent framework with .cursorrules and llms.txt setup.
+ * Provides Python-based agent framework with MCP server for documentation.
  */
 export const AgnoFrameworkProvider: FrameworkProvider = {
   id: "agno",

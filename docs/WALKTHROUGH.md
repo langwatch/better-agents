@@ -99,7 +99,7 @@ First steps:
 2. Update the AGENTS.md with specific details about what this project does
 3. Create a comprehensive README.md explaining the project, setup, and usage
 4. Set up the Python environment (requirements.txt)
-5. Review the .cursorrules and llms.txt files for Agno best practices
+5. Use the Agno MCP to learn about Agno best practices
 6. Use the LangWatch MCP to learn about prompt management and testing
 7. Start implementing the core agent functionality
 
@@ -140,8 +140,6 @@ my-stock-agent/
 │   │   └── example_eval.ipynb
 │   └── scenarios/               # Scenario tests
 │       └── example_scenario.test.py
-├── .cursorrules                 # Agno coding standards
-├── llms.txt                     # Agno documentation
 ├── .mcp.json                    # MCP server configuration (universal)
 ├── .cursor/
 │   └── mcp.json                 # Symlink to ../.mcp.json for Cursor
@@ -178,7 +176,7 @@ claude "Build an agent that can analyze stock prices and provide trading recomme
 Claude Code will:
 1. Read AGENTS.md
 2. Set up the Python environment
-3. Learn from Agno docs (.cursorrules, llms.txt)
+3. Learn from Agno MCP (ask it about Agno best practices)
 4. Use LangWatch MCP for prompt management
 5. Start building your agent with best practices
 
@@ -274,7 +272,7 @@ Visit: https://app.langwatch.ai/
 ## Getting Help
 
 - **Ask LangWatch MCP**: "How do I [do something]?"
-- **Consult Agno docs**: Check `.cursorrules` and `llms.txt`
+- **Consult Agno MCP**: Ask "How do I [do X] in Agno?"
 - **Visit LangWatch Dashboard**: https://app.langwatch.ai/
 - **Read Scenario docs**: https://scenario.langwatch.ai/
 
