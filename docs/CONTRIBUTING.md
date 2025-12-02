@@ -20,29 +20,10 @@ Thank you for your interest in contributing to Better Agents! This document prov
    pnpm build
    ```
 
-4. **Run in development mode**
+4. **Run the tests**
    ```bash
-   pnpm dev init test-project
+   pnpm test
    ```
-
-## Project Structure
-
-```
-src/
-├── index.ts              # CLI entry point
-├── types.ts              # TypeScript type definitions
-├── prompts.ts            # Interactive user prompts
-├── commands/
-│   └── init.ts          # Init command implementation
-└── utils/
-    ├── project-structure.ts  # Creates project folders and files
-    ├── mcp-config.ts        # Sets up MCP configuration
-    ├── agno-config.ts       # Agno-specific setup
-    ├── agents-md.ts         # Generates AGENTS.md
-    └── kickoff-agent.ts     # Starts coding assistant
-```
-
-## Adding a New Framework
 
 To add support for a new agent framework:
 

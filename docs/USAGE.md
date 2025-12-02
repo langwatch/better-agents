@@ -16,7 +16,7 @@ The CLI will guide you through:
 2. **Agent Framework**: Agno (Python) or Mastra (TypeScript)
 3. **Coding Assistant**: Claude Code, Cursor, Kilocode CLI, or None (manual prompt)
 4. **LLM Provider**: OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, or Grok
-5. **API Keys**: LLM Provider and LangWatch (required), Smithery (optional)
+5. **API Keys**: LLM Provider and LangWatch
 6. **Project Goal**: What you want to build
 
 ## Examples

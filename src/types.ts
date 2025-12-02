@@ -11,7 +11,6 @@ export type ProjectConfig = {
   llmApiKey: string;
   llmAdditionalInputs?: Record<string, string>;
   langwatchApiKey: string;
-  smitheryApiKey?: string;
   projectGoal: string;
 };
 

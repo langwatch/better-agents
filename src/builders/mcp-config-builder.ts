@@ -33,21 +33,6 @@ export const buildMCPConfig = async ({
     args: ["-y", "@langwatch/mcp-server"],
   };
 
-  // Add Smithery Toolbox MCP if API key provided
-  if (config.smitheryApiKey) {
-    mcpConfig.mcpServers.toolbox = {
-      command: "npx",
-      args: [
-        "-y",
-        "@smithery/cli@latest",
-        "run",
-        "@smithery/toolbox",
-        "--key",
-        config.smitheryApiKey,
-      ],
-    };
-  }
-
   // Add framework-specific MCP if available
   const frameworkProvider = getFrameworkProvider({
     framework: config.framework,

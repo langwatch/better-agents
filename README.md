@@ -36,7 +36,7 @@ my-agent-project/
 
 The structure and guidelines on `AGENTS.md` ensure every new feature required for the coding assistant is properly tested, evaluated, and that the prompts are versioned.
 
-The `.mcp.json` comes with all the right MCPs set up so you coding assistant becomes an expert in your framework of choice and know where to find new tools.
+The `.mcp.json` comes with all the right MCPs set up so you coding assistant becomes an expert in your framework of choice and in writing Scenario tests for your agent.
 
 [`scenarios/`](https://github.com/langwatch/scenario) tests guarantee the agent behaves as expected, which simulates a conversation with the agent making sure it does what expected.
 
@@ -92,7 +92,6 @@ The CLI will guide you through selecting your programming language, agent framew
 - API Keys:
   - Your chosen LLM Provider API key
   - LangWatch API key (get one at https://app.langwatch.ai/authorize)
-  - Smithery API key (optional - for MCP tool auto-discovery, get one at https://smithery.ai/account/api-keys)
 
 ## Resources
 

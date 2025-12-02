@@ -73,7 +73,6 @@ Your coding assistant is now an expert in:
 - API Keys:
   - Your chosen LLM Provider API key
   - LangWatch API key (get one at https://app.langwatch.ai/authorize)
-  - Smithery API key (optional - for MCP tool auto-discovery)
 
 ## Resources
 
