@@ -1,28 +1,25 @@
 import type { ProjectConfig } from "../types.js";
 import { getFrameworkProvider } from "../providers/frameworks/index.js";
-import { getCodingAssistantProvider } from "../providers/coding-assistants/index.js";
 import type { MCPConfigFile } from "../providers/coding-assistants/index.js";
 
 /**
- * Builds and writes MCP configuration using providers.
+ * Builds MCP configuration object based on project settings.
  *
  * @param params - Parameters object
- * @param params.projectPath - Absolute path to project root
  * @param params.config - Project configuration
- * @returns Promise that resolves when config is written
+ * @returns MCP configuration object
  *
  * @example
  * ```ts
- * await buildMCPConfig({ projectPath: '/path/to/project', config });
+ * const mcpConfig = buildMCPConfig({ config });
+ * // Returns: { mcpServers: { langwatch: {...}, mastra: {...} } }
  * ```
  */
-export const buildMCPConfig = async ({
-  projectPath,
+export const buildMCPConfig = ({
   config,
 }: {
-  projectPath: string;
   config: ProjectConfig;
-}): Promise<void> => {
+}): MCPConfigFile => {
   const mcpConfig: MCPConfigFile = {
     mcpServers: {},
   };
@@ -42,10 +39,6 @@ export const buildMCPConfig = async ({
     mcpConfig.mcpServers[frameworkProvider.id] = frameworkMCP;
   }
 
-  // Write using coding assistant provider
-  const assistantProvider = getCodingAssistantProvider({
-    assistant: config.codingAssistant,
-  });
-  await assistantProvider.writeMCPConfig({ projectPath, config: mcpConfig });
+  return mcpConfig;
 };
 

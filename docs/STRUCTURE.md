@@ -21,8 +21,11 @@ my-agent-project/
 ├── prompts/                 # Versioned prompt files for team collaboration
 │   └── sample_prompt.yaml
 ├── prompts.json             # Prompt registry
-├── .mcp.json                # MCP server configuration
+├── .mcp.json                # MCP server configuration (universal)
+├── .cursor/
+│   └── mcp.json             # Symlink to ../.mcp.json for Cursor IDE
 ├── AGENTS.md                # Development guidelines
+├── CLAUDE.md                # References AGENTS.md for Claude Code
 ├── .env                     # Environment variables
 └── .gitignore
 ```
@@ -32,8 +35,11 @@ my-agent-project/
 ### AGENTS.md
 Development guidelines that ensure every new feature is properly tested, evaluated, and that prompts are versioned.
 
+### CLAUDE.md
+References AGENTS.md for Claude Code compatibility. Automatically created so the project works with any AI coding editor.
+
 ### .mcp.json
-MCP server configuration that makes your coding assistant an expert in your chosen framework and provides access to additional tools.
+MCP server configuration that makes your coding assistant an expert in your chosen framework and provides access to additional tools. The `.cursor/mcp.json` is a symlink to this file for Cursor IDE compatibility.
 
 ### Scenario Tests (`tests/scenarios/`)
 End-to-end tests that simulate conversations with your agent to ensure it behaves as expected.

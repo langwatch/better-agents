@@ -21,7 +21,8 @@ export type MCPConfigFile = {
 
 /**
  * Interface for coding assistant providers.
- * Each assistant implements MCP config writing and launching.
+ * Each assistant implements availability checking and launching.
+ * Editor configuration (MCP files, CLAUDE.md, etc.) is handled centrally by editor-setup-builder.
  *
  * @example
  * ```ts
@@ -30,7 +31,6 @@ export type MCPConfigFile = {
  * if (!available.installed) {
  *   console.log(`Install with: ${available.installCommand}`);
  * }
- * await provider.writeMCPConfig({ projectPath, config });
  * await provider.launch({ projectPath, prompt });
  * ```
  */
@@ -44,12 +44,6 @@ export interface CodingAssistantProvider {
    * @returns Promise resolving to an object with installation status and install command if not installed
    */
   isAvailable(): Promise<{ installed: boolean; installCommand?: string }>;
-
-  /** Writes MCP config in assistant-specific format/location */
-  writeMCPConfig(params: {
-    projectPath: string;
-    config: MCPConfigFile;
-  }): Promise<void>;
 
   /** Launches the assistant with the given prompt */
   launch(params: { projectPath: string; prompt: string }): Promise<void>;

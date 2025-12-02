@@ -32,28 +32,30 @@ To add support for a new agent framework:
    export type AgentFramework = 'agno' | 'mastra' | 'your-framework';
    ```
 
-2. **Add framework choice** (`src/prompts.ts`):
+2. **Create a framework provider** (`src/providers/frameworks/your-framework/`):
    ```typescript
-   const frameworkChoices = [
-     // existing choices
-     { name: 'Your Framework', value: 'your-framework' },
-   ];
+   // src/providers/frameworks/your-framework/index.ts
+   export const YourFrameworkProvider: FrameworkProvider = {
+     id: 'your-framework',
+     language: 'python', // or 'typescript'
+     displayName: 'Your Framework',
+     async setup({ projectPath }) {
+       // Framework-specific setup
+     },
+     getMCPConfig() {
+       return { command: 'npx', args: [...] }; // optional
+     },
+     getAgentsGuidelines() {
+       return '## Your Framework Guidelines\n...';
+     },
+   };
    ```
 
-3. **Add MCP configuration** (`src/utils/mcp-config.ts`):
-   ```typescript
-   if (config.framework === 'your-framework') {
-     mcpConfig.mcpServers['your-framework'] = {
-       // your MCP config
-     };
-   }
-   ```
+3. **Register the provider** (`src/providers/frameworks/index.ts`):
+   Add your provider to the PROVIDERS map.
 
-4. **Add framework guidelines** (`src/utils/agents-md.ts`):
-   Add a new section in `getFrameworkGuidelines()` function.
-
-5. **Add setup utility** (if needed):
-   Create `src/utils/your-framework-config.ts` if special setup is required.
+4. **Add framework choice** (`src/config-collection/choice-builders/framework-choices.ts`):
+   Add your framework to the choices builder.
 
 ## Adding a New Coding Assistant
 
@@ -61,16 +63,33 @@ To add support for a new coding assistant:
 
 1. **Update types** (`src/types.ts`):
    ```typescript
-   export type CodingAssistant = 'claude-code' | 'your-assistant';
+   export type CodingAssistant = 'claude-code' | 'cursor' | 'kilocode' | 'your-assistant' | 'none';
    ```
 
-2. **Add assistant choice** (`src/prompts.ts`)
+2. **Create an assistant provider** (`src/providers/coding-assistants/your-assistant/`):
+   ```typescript
+   // src/providers/coding-assistants/your-assistant/index.ts
+   export const YourAssistantProvider: CodingAssistantProvider = {
+     id: 'your-assistant',
+     displayName: 'Your Assistant',
+     command: 'your-cli-command',
+     async isAvailable() {
+       // Check if the assistant CLI is installed
+       return { installed: true, installCommand: 'npm install -g your-cli' };
+     },
+     async launch({ projectPath, prompt }) {
+       // Launch the assistant with the initial prompt
+     },
+   };
+   ```
 
-3. **Update MCP configuration** (`src/utils/mcp-config.ts`):
-   Handle the new assistant's MCP config file format and location.
+3. **Register the provider** (`src/providers/coding-assistants/index.ts`):
+   Add your provider to the PROVIDERS map.
 
-4. **Update kickoff logic** (`src/utils/kickoff-agent.ts`):
-   Add instructions for launching the new assistant.
+4. **Add assistant choice** (`src/config-collection/choice-builders/coding-assistant-choices.ts`):
+   Add your assistant to the choices builder.
+
+Note: Editor configuration (MCP files, etc.) is handled centrally by `src/builders/editor-setup-builder.ts`. If your assistant needs specific files, add them there.
 
 ## Adding a New Language
 
@@ -81,13 +100,25 @@ To add support for a new programming language:
    export type ProgrammingLanguage = 'python' | 'typescript' | 'your-language';
    ```
 
-2. **Update prompts** (`src/prompts.ts`)
+2. **Create a language provider** (`src/providers/languages/your-language.ts`):
+   ```typescript
+   export const YourLanguageProvider: LanguageProvider = {
+     id: 'your-language',
+     displayName: 'Your Language',
+     sourceDir: 'src', // or 'app'
+     testFileExtension: '.test.yourlang',
+     // Add language-specific configuration
+   };
+   ```
 
-3. **Update project structure** (`src/utils/project-structure.ts`):
+3. **Register the provider** (`src/providers/languages/index.ts`):
+   Add your provider to the PROVIDERS map.
+
+4. **Add language choice** (`src/config-collection/choice-builders/language-choices.ts`):
+   Add your language to the choices builder.
+
+5. **Update project scaffolding** (`src/project-scaffolding/`):
    Add language-specific file templates and conventions.
-
-4. **Update AGENTS.md generator** (`src/utils/agents-md.ts`):
-   Add language-specific guidelines.
 
 ## Code Style
 

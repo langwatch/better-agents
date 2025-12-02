@@ -1,13 +1,11 @@
-import * as fs from "fs/promises";
-import * as path from "path";
-import { ProcessUtils } from "../../../utils/process.util";
-import { CliUtils } from "../../../utils/cli.util";
+import { ProcessUtils } from "../../../utils/process.util.js";
+import { CliUtils } from "../../../utils/cli.util.js";
 import { logger } from "../../../utils/logger/index.js";
 import type { CodingAssistantProvider } from "../index.js";
 
 /**
  * Kilocode assistant provider implementation.
- * Writes MCP configuration as .mcp.json in project root.
+ * Handles availability checking and launching Kilocode CLI.
  */
 export const KilocodeCodingAssistantProvider: CodingAssistantProvider = {
   id: "kilocode",
@@ -23,11 +21,6 @@ export const KilocodeCodingAssistantProvider: CodingAssistantProvider = {
       installed,
       installCommand: installed ? undefined : "npm install -g @kilocode/cli",
     };
-  },
-
-  async writeMCPConfig({ projectPath, config }) {
-    const mcpConfigPath = path.join(projectPath, ".mcp.json");
-    await fs.writeFile(mcpConfigPath, JSON.stringify(config, null, 2));
   },
 
   async launch({

@@ -142,8 +142,11 @@ my-stock-agent/
 │       └── example_scenario.test.py
 ├── .cursorrules                 # Agno coding standards
 ├── llms.txt                     # Agno documentation
-├── .mcp.json                    # MCP server configuration
+├── .mcp.json                    # MCP server configuration (universal)
+├── .cursor/
+│   └── mcp.json                 # Symlink to ../.mcp.json for Cursor
 ├── AGENTS.md                    # Development guidelines
+├── CLAUDE.md                    # References AGENTS.md for Claude Code
 ├── .env                         # Your API keys (DO NOT COMMIT!)
 ├── .env.example                 # Template for API keys
 ├── .gitignore

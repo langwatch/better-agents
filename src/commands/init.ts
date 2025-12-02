@@ -5,6 +5,7 @@ import { createProjectStructure } from "../project-scaffolding/create-project-st
 import { getFrameworkProvider } from "../providers/frameworks/index.js";
 import { buildAgentsGuide } from "../builders/agents-guide-builder.js";
 import { buildMCPConfig } from "../builders/mcp-config-builder.js";
+import { setupEditorConfigs } from "../builders/editor-setup-builder.js";
 import { kickoffAssistant } from "../assistant-kickoff/kickoff-assistant.js";
 import { LoggerFacade } from "../utils/logger/logger-facade.js";
 import type { ProjectConfig } from "../types.js";
@@ -104,11 +105,12 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
       frameworkTimer();
       spinner.text = "Framework configuration set up";
 
-      // Build MCP config using builder
-      const mcpTimer = projectLogger.startTimer('mcp-config');
-      await buildMCPConfig({ projectPath: absolutePath, config });
-      mcpTimer();
-      spinner.text = "MCP configuration set up";
+      // Build MCP config and set up all editor configurations
+      const editorTimer = projectLogger.startTimer('editor-setup');
+      const mcpConfig = buildMCPConfig({ config });
+      await setupEditorConfigs({ projectPath: absolutePath, mcpConfig });
+      editorTimer();
+      spinner.text = "Editor configurations set up";
 
       // Build AGENTS.md using builder
       const agentsTimer = projectLogger.startTimer('agents-guide');

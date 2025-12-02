@@ -1,11 +1,9 @@
-import * as fs from "fs/promises";
-import * as path from "path";
 import { logger } from "../../../utils/logger/index.js";
 import type { CodingAssistantProvider } from "../index.js";
 
 /**
  * Cursor assistant provider implementation.
- * Writes MCP configuration as .cursor/mcp.json in project root.
+ * Handles availability checking and launch instructions for Cursor IDE.
  */
 export const CursorCodingAssistantProvider: CodingAssistantProvider = {
   id: "cursor",
@@ -18,16 +16,6 @@ export const CursorCodingAssistantProvider: CodingAssistantProvider = {
   }> {
     // Cursor is always available as it's an IDE, not a CLI tool
     return { installed: true };
-  },
-
-  async writeMCPConfig({ projectPath, config }) {
-    // Create .cursor directory
-    const cursorDir = path.join(projectPath, ".cursor");
-    await fs.mkdir(cursorDir, { recursive: true });
-
-    // Write MCP config to .cursor/mcp.json
-    const mcpConfigPath = path.join(cursorDir, "mcp.json");
-    await fs.writeFile(mcpConfigPath, JSON.stringify(config, null, 2));
   },
 
   async launch({

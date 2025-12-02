@@ -39,7 +39,9 @@ my-agent/
 │   ├── evaluations/        # Performance evaluation notebooks
 │   └── scenarios/          # End-to-end scenario tests
 ├── AGENTS.md               # Development guidelines
-└── .mcp.json              # Coding assistant configuration
+├── CLAUDE.md               # References AGENTS.md for Claude Code
+├── .mcp.json               # MCP server configuration (universal)
+└── .cursor/mcp.json        # Symlink to .mcp.json for Cursor
 ```
 
 ## Next Steps
