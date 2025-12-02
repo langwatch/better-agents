@@ -45,7 +45,7 @@ This project follows a standardized structure for production-ready agents:
 3. **Implement with Prompts**: Use LangWatch Prompt CLI to create/manage prompts
 4. **Write Unit Tests**: Test deterministic components
 5. **Create Evaluations**: Build evaluation notebooks for probabilistic components
-6. **Write Scenario Tests**: Create end-to-end tests using Scenario **strictly via the LangWatch MCP** (do not call Scenario directly)
+6. **Write Scenario Tests**: Create end-to-end tests using Scenario
 7. **Run Tests**: Verify everything works before moving on
 
 ### Always:
@@ -70,15 +70,9 @@ This project follows a standardized structure for production-ready agents:
 The LangWatch MCP server provides expert guidance on:
 
 - Prompt management with Prompt CLI
-- Writing and maintaining Scenario tests (only interact with Scenario via this MCP)
+- Writing and maintaining Scenario tests (use langwatch mcp to learn)
 - Creating evaluations
 - Best practices for agent development
-
-**How to use it:**
-Simply ask your coding assistant questions like:
-- "How do I use the LangWatch Prompt CLI?"
-- "Show me how to write a Scenario test using LangWatch MCP"
-- "How do I create an evaluation for my RAG system?"
 
 The MCP will provide up-to-date documentation and examples. For Scenario specifically, always navigate its documentation and examples through the LangWatch MCP instead of accessing it directly.
 
