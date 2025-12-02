@@ -30,7 +30,7 @@ export const generateSampleScenario = async ({
     language === "python"
       ? `"""
 Sample scenario test for your agent.
-Follow the Agent Testing Pyramid: use Scenario for end-to-end agentic tests.
+Follow the Agent Testing Pyramid: use Scenario for end-to-end agentic tests, but always access Scenario and its docs strictly via the LangWatch MCP.
 """
 
 # TODO: Add your scenario tests here
@@ -38,7 +38,7 @@ Follow the Agent Testing Pyramid: use Scenario for end-to-end agentic tests.
 `
       : `/**
  * Sample scenario test for your agent.
- * Follow the Agent Testing Pyramid: use Scenario for end-to-end agentic tests.
+ * Follow the Agent Testing Pyramid: use Scenario for end-to-end agentic tests, but always access Scenario and its docs strictly via the LangWatch MCP.
  */
 
 // TODO: Add your scenario tests here

@@ -11,11 +11,11 @@
 export const buildPrinciplesSection = (): string => {
   return `## Core Principles
 
-### 1. Scenario Agent Testing
+### 1. Scenario Agent Testing (via LangWatch MCP)
 
-Scenario allows for end-to-end validation of multi-turn conversations and real-world scenarios, most agent functionality should be tested with scenarios
+Scenario allows for end-to-end validation of multi-turn conversations and real-world scenarios. Most agent functionality should be tested with Scenario tests, and these MUST be created and maintained strictly using the LangWatch MCP (do not access external Scenario tools or docs directly).
 
-**CRITICAL**: Every new agent feature MUST be tested with Scenario tests before considering it complete.
+**CRITICAL**: Every new agent feature MUST be tested with Scenario tests (accessed and managed via the LangWatch MCP) before considering it complete.
 
 - Write simulation tests for multi-turn conversations
 - Validate edge cases
@@ -29,7 +29,7 @@ Best practices:
 - When broken, run on single scenario at a time to debug and iterate faster, not the whole suite
 - Write as few scenarios as possible, try to cover more ground with few scenarios, as they are heavy to run
 - If user made 1 request, just 1 scenario might be enough, run it at the end of the implementation to check if it works
-- ALWAYS consult the Scenario docs on how to write scenarios, do not assume the syntax
+- ALWAYS consult the Scenario docs **through the LangWatch MCP** on how to write scenarios, do not assume the syntax, and do not browse Scenario docs directly outside of the MCP
 
 ### 2. Prompt Management
 
