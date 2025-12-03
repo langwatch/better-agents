@@ -1,7 +1,9 @@
 import { ClaudeCodingAssistantProvider } from "./claude/index.js";
 import { CursorCodingAssistantProvider } from "./cursor/index.js";
+import { AntigravityCodingAssistantProvider } from "./antigravity/index.js";
 import { KilocodeCodingAssistantProvider } from "./kilocode/index.js";
 import { NoneCodingAssistantProvider } from "./none/index.js";
+import { CodingAssistant } from "../../types.js";
 
 export type MCPConfigFile = {
   mcpServers: Record<
@@ -49,10 +51,11 @@ export interface CodingAssistantProvider {
   launch(params: { projectPath: string; targetPath: string; prompt: string }): Promise<void>;
 }
 
-const PROVIDERS: Record<string, CodingAssistantProvider> = {
+const PROVIDERS: Record<CodingAssistant, CodingAssistantProvider> = {
   kilocode: KilocodeCodingAssistantProvider,
   "claude-code": ClaudeCodingAssistantProvider,
   cursor: CursorCodingAssistantProvider,
+  antigravity: AntigravityCodingAssistantProvider,
   none: NoneCodingAssistantProvider,
 };
 
@@ -73,7 +76,7 @@ export const getCodingAssistantProvider = ({
 }: {
   assistant: string;
 }): CodingAssistantProvider => {
-  const provider = PROVIDERS[assistant];
+  const provider = PROVIDERS[assistant as CodingAssistant];
   if (!provider) {
     throw new Error(`Coding assistant provider not found: ${assistant}`);
   }
