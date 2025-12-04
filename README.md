@@ -92,6 +92,7 @@ The CLI will guide you through selecting your programming language, agent framew
 - A coding assistant (one of the following):
   - [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code-agent) (`claude` CLI)
   - [Cursor](https://www.cursor.com/)
+  - [Antigravity](https://antigravity.google/) (`agy`)
   - [Kilocode CLI](https://www.kilocode.ai/) (`kilocode`)
 - API Keys:
   - Your chosen LLM Provider API key

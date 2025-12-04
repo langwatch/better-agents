@@ -7,6 +7,7 @@ import { getFrameworkProvider } from "../providers/frameworks/index.js";
 import { buildAgentsGuide } from "../builders/agents-guide-builder.js";
 import { buildMCPConfig } from "../builders/mcp-config-builder.js";
 import { setupEditorConfigs } from "../builders/editor-setup-builder.js";
+import { setupAntigravityMCPConfig } from "../providers/coding-assistants/antigravity/index.js";
 import { kickoffAssistant } from "../assistant-kickoff/kickoff-assistant.js";
 import { LoggerFacade } from "../utils/logger/logger-facade.js";
 import type { ProjectConfig } from "../types.js";
@@ -114,6 +115,11 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
       const editorTimer = projectLogger.startTimer('editor-setup');
       const mcpConfig = buildMCPConfig({ config });
       await setupEditorConfigs({ projectPath: absolutePath, mcpConfig });
+
+      // Special handling for Antigravity - uses user home config instead of project
+      if (config.codingAssistant === 'antigravity') {
+        await setupAntigravityMCPConfig(mcpConfig);
+      }
       editorTimer();
       spinner.text = "Editor configurations set up";
 

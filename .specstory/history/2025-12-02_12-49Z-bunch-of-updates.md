@@ -6591,3 +6591,769 @@ feat: ensure .gitignore has .better-agents after framework setup
 
 ---
 
+_**User (2025-12-03 05:21Z)**_
+
+hey, now, can you add "Antigravity" as a coding editor choice, it will be just like cursor, but the command to open the IDE is `agy` instead of cursor
+
+
+
+however, antigravity is the only little special one becuase google didn't do a proper job on it yet, so to set up the mcps on it, the only way is to change a user home file which is at ~/.gemini/antigravity/mcp_config.json and add the mcps there in the same `"mcpServers": {` format
+
+
+
+because this is weird and special, I want to do it ONLY if the user selected antigravity, not global for everyone ragardless of the editor of choice like the other configs
+
+
+
+now, you need to be careful cuz if this file already exists, we dont want to override it, just append our mcps there, and if we do it twice that should be idempotent, it should be easy since it's all dict keys, we just need to merge it, skip a key if already exists
+
+---
+
+_**Agent (model claude-4.5-opus-high-thinking, mode Agent)**_
+
+<think><details><summary>Thought Process</summary>
+The user wants me to:
+
+1. Add "Antigravity" as a new coding editor choice
+2. It works like Cursor but uses `agy` command instead of `cursor`
+3. For Antigravity specifically, MCP config goes to `~/.gemini/antigravity/mcp_config.json`
+4. This is a special case - only for Antigravity, not for other editors
+5. If the file exists, merge our MCPs (don't override existing keys)
+6. Should be idempotent - running twice shouldn't duplicate
+
+Let me start by:
+1. Creating the Antigravity provider (similar to Cursor)
+2. Adding special MCP setup logic for Antigravity
+3. Updating the types and registering the provider
+
+Let me first look at the Cursor implementation and the types to understand the structure.</details></think>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Users/rchaves/Projects/better-agents/src/providers/coding-assistants/cursor/index.ts</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Users/rchaves/Projects/better-agents/src/types.ts</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Users/rchaves/Projects/better-agents/src/providers/coding-assistants/index.ts</summary>
+
+</details>
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Now I understand the structure. I need to:
+
+1. Add 'antigravity' to CodingAssistant type
+2. Create a new Antigravity provider (similar to Cursor)
+3. Register it in the PROVIDERS4. For the special MCP handling, I need to update the editor-setup-builder to handle Antigravity speciallyLet me also check the editor-setup-builder to understand how to add the special handling.</details></think>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Users/rchaves/Projects/better-agents/src/builders/editor-setup-builder.ts</summary>
+
+</details>
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Now I have a full picture. I need to:
+
+1. Add 'antigravity' to CodingAssistant type in `src/types.ts`
+2. Create `src/providers/coding-assistants/antigravity/index.ts`
+3. Register it in `src/providers/coding-assistants/index.ts`
+4. Create a separate function to handle Antigravity MCP config in `~/.gemini/antigravity/mcp_config.json`
+5. Call this function from init.ts only when the selected assistant is antigravity
+
+Let me implement this:</details></think>
+
+---
+
+Let me implement the Antigravity provider and its special MCP handling:
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/src/types.ts</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -1,5 +1,5 @@
+  export type ProgrammingLanguage = &#39;python&#39; | &#39;typescript&#39;;
+  export type AgentFramework = &#39;agno&#39; | &#39;mastra&#39; | &#39;langgraph-py&#39; | &#39;langgraph-ts&#39;;
+- export type CodingAssistant = &#39;claude-code&#39; | &#39;cursor&#39; | &#39;kilocode&#39; | &#39;none&#39;;
++ export type CodingAssistant = &#39;claude-code&#39; | &#39;cursor&#39; | &#39;antigravity&#39; | &#39;kilocode&#39; | &#39;none&#39;;
+  export type LLMProvider = &#39;openai&#39; | &#39;anthropic&#39; | &#39;gemini&#39; | &#39;bedrock&#39; | &#39;openrouter&#39; | &#39;grok&#39;;
+  
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="write">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/src/providers/coding-assistants/antigravity/index.ts</summary>
+
+**Chunk 1**
+Lines added: 110, lines removed: 1
+
+```diff
+@@ -1,1 +1,110 @@
+- 
++ import * as fs from &quot;fs/promises&quot;;
++ import * as path from &quot;path&quot;;
++ import * as os from &quot;os&quot;;
++ import { logger } from &quot;../../../utils/logger/index.js&quot;;
++ import type { CodingAssistantProvider, MCPConfigFile } from &quot;../index.js&quot;;
++ 
++ /**
++  * Antigravity assistant provider implementation.
++  * Handles availability checking and launch instructions for Antigravity IDE.
++  * 
++  * Note: Antigravity has special MCP config handling - it uses ~/.gemini/antigravity/mcp_config.json
++  * instead of project-local config files.
++  */
++ export const AntigravityCodingAssistantProvider: CodingAssistantProvider = {
++   id: &quot;antigravity&quot;,
++   displayName: &quot;Antigravity&quot;,
++   command: &quot;agy&quot;,
++ 
++   async isAvailable(): Promise&lt;{
++     installed: boolean;
++     installCommand?: string;
++   }&gt; {
++     // Antigravity is always available as it&#39;s an IDE, not a CLI tool
++     return { installed: true };
++   },
++ 
++   async launch({
++     targetPath,
++   }: {
++     projectPath: string;
++     targetPath: string;
++     prompt: string;
++   }): Promise&lt;void&gt; {
++     const isCurrentDir = targetPath === &quot;.&quot;;
++ 
++     logger.userPlain(&#39;&#39;);
++     logger.userPlain(&#39;To get started with Antigravity:&#39;);
++     logger.userPlain(&#39;&#39;);
++     if (isCurrentDir) {
++       logger.userPlain(&#39;  1. Open the current folder in Antigravity:&#39;);
++       logger.userPlain(&#39;&#39;);
++       logger.userPlain(&#39;     agy .&#39;);
++     } else {
++       logger.userPlain(&#39;  1. Open the project in Antigravity:&#39;);
++       logger.userPlain(&#39;&#39;);
++       logger.userPlain(&#96;     agy ${targetPath}&#96;);
++     }
++     logger.userPlain(&#39;&#39;);
++     logger.userPlain(&#39;  2. Copy and paste the prompt above to start building your agent&#39;);
++     logger.userPlain(&#39;&#39;);
++   },
++ };
++ 
++ /**
++  * Sets up MCP config for Antigravity in the user&#39;s home directory.
++  * Antigravity uses ~/.gemini/antigravity/mcp_config.json instead of project-local config.
++  * 
++  * This function:
++  * - Creates the config file if it doesn&#39;t exist
++  * - Merges new MCPs into existing config (idempotent - skips existing keys)
++  * 
++  * @param mcpConfig - MCP configuration to merge
++  * @returns Promise that resolves when config is updated
++  *
++  * @example
++  * &#96;&#96;&#96;ts
++  * await setupAntigravityMCPConfig(mcpConfig);
++  * &#96;&#96;&#96;
++  */
++ export const setupAntigravityMCPConfig = async (
++   mcpConfig: MCPConfigFile
++ ): Promise&lt;void&gt; =&gt; {
++   const antigravityConfigDir = path.join(os.homedir(), &quot;.gemini&quot;, &quot;antigravity&quot;);
++   const antigravityConfigPath = path.join(antigravityConfigDir, &quot;mcp_config.json&quot;);
++ 
++   // Ensure directory exists
++   await fs.mkdir(antigravityConfigDir, { recursive: true });
++ 
++   let existingConfig: MCPConfigFile = { mcpServers: {} };
++ 
++   // Try to read existing config
++   try {
++     const existingContent = await fs.readFile(antigravityConfigPath, &quot;utf-8&quot;);
++     existingConfig = JSON.parse(existingContent) as MCPConfigFile;
++     
++     // Ensure mcpServers exists
++     if (!existingConfig.mcpServers) {
++       existingConfig.mcpServers = {};
++     }
++   } catch {
++     // File doesn&#39;t exist or is invalid, start fresh
++     existingConfig = { mcpServers: {} };
++   }
++ 
++   // Merge new MCPs into existing config (skip existing keys for idempotency)
++   for (const [key, value] of Object.entries(mcpConfig.mcpServers)) {
++     if (!(key in existingConfig.mcpServers)) {
++       existingConfig.mcpServers[key] = value;
++     }
++   }
++ 
++   // Write merged config
++   await fs.writeFile(
++     antigravityConfigPath,
++     JSON.stringify(existingConfig, null, 2)
++   );
++ 
++   logger.userInfo(&#96;Antigravity MCP config updated at: ${antigravityConfigPath}&#96;);
++ };
++ 
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/src/providers/coding-assistants/index.ts</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -1,4 +1,5 @@
+  import { ClaudeCodingAssistantProvider } from &quot;./claude/index.js&quot;;
+  import { CursorCodingAssistantProvider } from &quot;./cursor/index.js&quot;;
++ import { AntigravityCodingAssistantProvider } from &quot;./antigravity/index.js&quot;;
+  import { KilocodeCodingAssistantProvider } from &quot;./kilocode/index.js&quot;;
+  import { NoneCodingAssistantProvider } from &quot;./none/index.js&quot;;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/src/providers/coding-assistants/index.ts</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -55,4 +55,5 @@
+    &quot;claude-code&quot;: ClaudeCodingAssistantProvider,
+    cursor: CursorCodingAssistantProvider,
++   antigravity: AntigravityCodingAssistantProvider,
+    none: NoneCodingAssistantProvider,
+  };
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Now I need to update `init.ts` to call the Antigravity MCP setup when the user selects Antigravity. I also need to export the `setupAntigravityMCPConfig` function from the provider index.</details></think>
+
+---
+
+Now let me update `init.ts` to call the Antigravity MCP setup when selected:
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/src/commands/init.ts</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -8,4 +8,5 @@
+  import { buildMCPConfig } from &quot;../builders/mcp-config-builder.js&quot;;
+  import { setupEditorConfigs } from &quot;../builders/editor-setup-builder.js&quot;;
++ import { setupAntigravityMCPConfig } from &quot;../providers/coding-assistants/antigravity/index.js&quot;;
+  import { kickoffAssistant } from &quot;../assistant-kickoff/kickoff-assistant.js&quot;;
+  import { LoggerFacade } from &quot;../utils/logger/logger-facade.js&quot;;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/src/commands/init.ts</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: undefined
+
+```diff
+@@ -116,4 +116,9 @@
+        const mcpConfig = buildMCPConfig({ config });
+        await setupEditorConfigs({ projectPath: absolutePath, mcpConfig });
++       
++       // Special handling for Antigravity - uses user home config instead of project
++       if (config.codingAssistant === &#39;antigravity&#39;) {
++         await setupAntigravityMCPConfig(mcpConfig);
++       }
+        editorTimer();
+        spinner.text = &quot;Editor configurations set up&quot;;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Now let me verify everything compiles.</details></think>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **command** • Run command: cd /Users/rchaves/Projects/better-agents && pnpm exec tsc --noEmit</summary>
+
+```bash
+cd /Users/rchaves/Projects/better-agents && pnpm exec tsc --noEmit
+```
+</details>
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+All good! Let me also update the docs to mention Antigravity in the list of supported coding assistants.</details></think>
+
+---
+
+Let me also update the documentation to include Antigravity:
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/README.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -93,4 +93,5 @@
+    - [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code-agent) (&#96;claude&#96; CLI)
+    - [Cursor](https://www.cursor.com/)
++   - [Antigravity](https://idx.google.com/) (&#96;agy&#96;)
+    - [Kilocode CLI](https://www.kilocode.ai/) (&#96;kilocode&#96;)
+  - API Keys:
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="search" data-tool-name="grep">
+<details>
+<summary>Tool use: **grep** • Grep for "Claude Code, Cursor, Kilocode" in "/Users/rchaves/Projects/better-agents/docs" • 3 matches</summary>
+
+Output mode: files_with_matches
+
+
+| File |
+|------|
+| `docs/USAGE.md` |
+| `docs/GETTING-STARTED.md` |
+| `docs/FEATURES.md` |
+
+
+</details>
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Let me update the other docs files to include Antigravity.</details></think>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/docs/USAGE.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -15,5 +15,5 @@
+  1. **Programming Language**: Python or TypeScript
+  2. **Agent Framework**: Agno (Python) or Mastra (TypeScript)
+- 3. **Coding Assistant**: Claude Code, Cursor, Kilocode CLI, or None (manual prompt)
++ 3. **Coding Assistant**: Claude Code, Cursor, Antigravity, Kilocode CLI, or None (manual prompt)
+  4. **LLM Provider**: OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, or Grok
+  5. **API Keys**: LLM Provider and LangWatch
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/docs/GETTING-STARTED.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -25,5 +25,5 @@
+  1. **Language**: Python or TypeScript
+  2. **Framework**: Agno (Python) or Mastra (TypeScript)
+- 3. **Coding Assistant**: Claude Code, Cursor, Kilocode CLI, or None
++ 3. **Coding Assistant**: Claude Code, Cursor, Antigravity, Kilocode CLI, or None
+  4. **LLM Provider**: OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, or Grok
+  5. **API Keys**: Your chosen LLM Provider API key and LangWatch API key
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/docs/GETTING-STARTED.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -72,4 +72,5 @@
+    - [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code-agent) (&#96;claude&#96; CLI)
+    - [Cursor](https://www.cursor.com/)
++   - [Antigravity](https://idx.google.com/) (&#96;agy&#96;)
+    - [Kilocode CLI](https://www.kilocode.ai/) (&#96;kilocode&#96;)
+  - API Keys:
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/docs/FEATURES.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -15,5 +15,5 @@
+  ## 🤖 Coding Assistant Setup
+  
+- Your coding assistant (e.g., Claude Code, Cursor, Kilocode CLI) is:
++ Your coding assistant (e.g., Claude Code, Cursor, Antigravity, Kilocode CLI) is:
+  - **Automatically launched** after project setup with initial prompt
+  - Pre-configured with framework-specific knowledge (via MCP or docs)
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Let me verify everything still compiles.</details></think>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **command** • Run command: cd /Users/rchaves/Projects/better-agents && pnpm exec tsc --noEmit && pnpm test:ci</summary>
+
+```bash
+cd /Users/rchaves/Projects/better-agents && pnpm exec tsc --noEmit && pnpm test:ci
+```
+
+```
+
+&gt; @langwatch/better-agents@0.1.18 test:ci /Users/rchaves/Projects/better-agents
+&gt; vitest --run
+
+
+ RUN  v2.1.9 /Users/rchaves/Projects/better-agents
+
+ ↓ src/config-collection/__tests__/validators.test.ts (8 tests | 8 skipped)
+ ↓ src/tool-setup/__tests__/mcp-servers.test.ts (4 tests | 4 skipped)
+ ↓ src/project-scaffolding/__tests__/create-project-structure.test.ts (3 tests | 3 skipped)
+ ↓ src/project-scaffolding/__tests__/main-entry-point.test.ts (4 tests | 4 skipped)
+ ↓ src/documentation/__tests__/sections.test.ts (6 tests | 6 skipped)
+ ↓ src/config-collection/__tests__/choice-builders.test.ts (2 tests | 2 skipped)
+ ↓ src/assistant-kickoff/__tests__/build-prompt.test.ts (5 tests | 5 skipped)
+ ↓ src/tool-setup/__tests__/agno-tools.test.ts (4 tests | 4 skipped)
+
+ Test Files  8 skipped (8)
+      Tests  36 todo (36)
+   Start at  12:47:07
+   Duration  425ms (transform 123ms, setup 0ms, collect 149ms, tests 0ms, environment 1ms, prepare 1.04s)
+
+
+```
+</details>
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+All good. Let me provide a summary of what was implemented for Antigravity.</details></think>
+
+---
+
+Done! Here's what was added for Antigravity:
+
+**New Files:**
+- `src/providers/coding-assistants/antigravity/index.ts` - Provider + special MCP setup
+
+**Key Features:**
+1. **Antigravity provider** - Similar to Cursor but with `agy` command
+2. **Special MCP handling** - Only for Antigravity:
+   - Writes to `~/.gemini/antigravity/mcp_config.json`
+   - Creates directory if doesn't exist
+   - **Merges** new MCPs into existing config (doesn't overwrite)
+   - **Idempotent** - skips keys that already exist
+3. **Updated docs** - Added Antigravity to all coding assistant lists
+
+**Behavior:**
+- When user selects Antigravity, the normal project configs are created AND the user's home Antigravity config is updated
+- If `~/.gemini/antigravity/mcp_config.json` exists with other MCPs, they're preserved
+- Running init twice won't duplicate entries
+
+---
+
+_**User (2025-12-03 05:21Z)**_
+
+idx? this is NOT antigravity website, it's https://antigravity.google/ 
+
+---
+
+_**Agent (model claude-4.5-opus-high-thinking, mode Agent)**_
+
+<think><details><summary>Thought Process</summary>
+The user is correcting me - the Antigravity website is https://antigravity.google/, not idx.google.com. Let me fix the documentation.</details></think>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/README.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -93,5 +93,5 @@
+    - [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code-agent) (&#96;claude&#96; CLI)
+    - [Cursor](https://www.cursor.com/)
+-   - [Antigravity](https://idx.google.com/) (&#96;agy&#96;)
++   - [Antigravity](https://antigravity.google/) (&#96;agy&#96;)
+    - [Kilocode CLI](https://www.kilocode.ai/) (&#96;kilocode&#96;)
+  - API Keys:
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/docs/GETTING-STARTED.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -72,5 +72,5 @@
+    - [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code-agent) (&#96;claude&#96; CLI)
+    - [Cursor](https://www.cursor.com/)
+-   - [Antigravity](https://idx.google.com/) (&#96;agy&#96;)
++   - [Antigravity](https://antigravity.google/) (&#96;agy&#96;)
+    - [Kilocode CLI](https://www.kilocode.ai/) (&#96;kilocode&#96;)
+  - API Keys:
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Fixed both links to point to the correct Antigravity website: https://antigravity.google/</details></think>
+
+---
+
+Fixed! Updated to the correct link: https://antigravity.google/
+
+---
+
+_**User (2025-12-03 05:21Z)**_
+
+@src/utils/coding-assistant.util.ts:1-33 ok so this code is weird, it shouldn't be doing isCommandAvailable like that by hand, and shouldn't have the list here of agents by hand. Instead it should look at the index of all coding assistants we have and use the method on their own interface which each knows how to best check if available
+
+---
+
+_**Agent (model claude-4.5-opus-high-thinking, mode Agent)**_
+
+<think><details><summary>Thought Process</summary>
+The user is right - this code is duplicating logic. Instead of hardcoding the list of assistants and their commands, it should use the providers from `getAllCodingAssistants()` and call each provider's `isAvailable()` method.
+
+Let me refactor this to use the provider pattern properly.</details></think>
+
+---
+
+You're right - this should use the providers' own `isAvailable()` method. Let me fix it:
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Users/rchaves/Projects/better-agents/src/utils/coding-assistant.util.ts</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -1,3 +1,3 @@
+- import { CliUtils } from &quot;./cli.util&quot;;
++ import { getAllCodingAssistants } from &quot;../providers/coding-assistants/index.js&quot;;
+  
+  /**
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -7,4 +7,5 @@
+    /**
+     * Detects which coding assistants are installed on the system.
++    * Uses each provider&#39;s own isAvailable() method for detection.
+     *
+     * @returns Promise resolving to a map of assistant IDs to installation status
+```
+
+**Chunk 3**
+Lines added: 11, lines removed: 13
+
+```diff
+@@ -13,20 +14,18 @@
+     * &#96;&#96;&#96;ts
+     * const installed = await CodingAssistantUtils.detectInstalledAgents();
+-    * // Returns: { &#39;claude-code&#39;: true, &#39;cursor&#39;: false, &#39;kilocode&#39;: true }
++    * // Returns: { &#39;claude-code&#39;: true, &#39;cursor&#39;: false, &#39;kilocode&#39;: true, ... }
+     * &#96;&#96;&#96;
+     */
+    static async detectInstalledAgents(): Promise&lt;Record&lt;string, boolean&gt;&gt; {
+-     const [hasClaude, hasCursor, hasKilocode] = await Promise.all([
+-       CliUtils.isCommandAvailable(&quot;claude&quot;),
+-       CliUtils.isCommandAvailable(&quot;cursor-agent&quot;),
+-       CliUtils.isCommandAvailable(&quot;kilocode&quot;),
+-     ]);
+- 
+-     return {
+-       &quot;claude-code&quot;: hasClaude,
+-       cursor: hasCursor,
+-       kilocode: hasKilocode,
+-       none: true, // Always available since it doesn&#39;t require installation
+-     };
++     const providers = getAllCodingAssistants();
++     
++     const results = await Promise.all(
++       providers.map(async (provider) =&gt; {
++         const availability = await provider.isAvailable();
++         return [provider.id, availability.installed] as const;
++       })
++     );
++ 
++     return Object.fromEntries(results);
+    }
+  }
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Let me verify it compiles.</details></think>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **command** • Run command: cd /Users/rchaves/Projects/better-agents && pnpm exec tsc --noEmit</summary>
+
+```bash
+cd /Users/rchaves/Projects/better-agents && pnpm exec tsc --noEmit
+```
+</details>
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+All good. Now it uses `getAllCodingAssistants()` and calls each provider's `isAvailable()` method, so:
+- No more hardcoded list of assistants
+- Each provider defines how to check its own availability- New providers are automatically included</details></think>
+
+---
+
+Done! Now it:
+- Uses `getAllCodingAssistants()` to get all providers dynamically
+- Calls each provider's own `isAvailable()` method
+- No more hardcoded list - new providers are automatically included
+
+---
+

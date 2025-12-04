@@ -24,7 +24,7 @@ Follow the prompts:
 
 1. **Language**: Python or TypeScript
 2. **Framework**: Agno (Python) or Mastra (TypeScript)
-3. **Coding Assistant**: Claude Code, Cursor, Kilocode CLI, or None
+3. **Coding Assistant**: Claude Code, Cursor, Antigravity, Kilocode CLI, or None
 4. **LLM Provider**: OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, or Grok
 5. **API Keys**: Your chosen LLM Provider API key and LangWatch API key
 6. **Project Goal**: Describe what you want to build
@@ -71,6 +71,7 @@ Your coding assistant is now an expert in:
 - A coding assistant (one of the following):
   - [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code-agent) (`claude` CLI)
   - [Cursor](https://www.cursor.com/)
+  - [Antigravity](https://antigravity.google/) (`agy`)
   - [Kilocode CLI](https://www.kilocode.ai/) (`kilocode`)
 - API Keys:
   - Your chosen LLM Provider API key

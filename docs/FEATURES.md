@@ -14,7 +14,7 @@
 
 ## 🤖 Coding Assistant Setup
 
-Your coding assistant (e.g., Claude Code, Cursor, Kilocode CLI) is:
+Your coding assistant (e.g., Claude Code, Cursor, Antigravity, Kilocode CLI) is:
 - **Automatically launched** after project setup with initial prompt
 - Pre-configured with framework-specific knowledge (via MCP or docs)
 - Loaded with LangWatch best practices
