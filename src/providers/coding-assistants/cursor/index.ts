@@ -56,23 +56,21 @@ export const CursorCodingAssistantProvider: CodingAssistantProvider = {
 
     // On Windows/WSL or if launch failed, show manual instructions
     const isCurrentDir = targetPath === ".";
+    const path = isCurrentDir ? "." : targetPath;
+    const composerShortcut = os.platform() === "darwin" ? "Cmd+I" : "Ctrl+I";
 
-    logger.userPlain('');
-    logger.userPlain('To get started with Cursor:');
-    logger.userPlain('');
-    if (isCurrentDir) {
-      logger.userPlain('  1. Open the current folder in Cursor:');
-      logger.userPlain('');
-      logger.userPlain('     cursor-agent .');
-    } else {
-      logger.userPlain('  1. Open the project in Cursor:');
-      logger.userPlain('');
-      logger.userPlain(`     cursor-agent ${targetPath}`);
-    }
-    logger.userPlain('');
-    logger.userPlain('  2. Open Cursor Composer (Cmd+I or Ctrl+I)');
-    logger.userPlain('');
-    logger.userPlain('  3. Copy and paste the prompt above to start building your agent');
-    logger.userPlain('');
+    logger.userPlain("");
+    logger.userPlain("┌─────────────────────────────────────────────────────┐");
+    logger.userPlain("│  🚀 Next Steps                                      │");
+    logger.userPlain("└─────────────────────────────────────────────────────┘");
+    logger.userPlain("");
+    logger.userPlain(`  1. Launch Cursor with your project:`);
+    logger.userPlain("");
+    logger.userPlain(`     cursor-agent ${path}`);
+    logger.userPlain("");
+    logger.userPlain(`  2. Open Cursor (${composerShortcut})`);
+    logger.userPlain("");
+    logger.userPlain("  3. Paste the prompt above and start building!");
+    logger.userPlain("");
   },
 };
