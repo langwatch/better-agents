@@ -1,7 +1,7 @@
 import { ProcessUtils } from "../../../utils/process.util.js";
 import { logger } from "../../../utils/logger/index.js";
 import type { CodingAssistantProvider } from "../index.js";
-import * as os from "os";
+import * as os from "node:os";
 
 /**
  * Checks if we're running on macOS.
