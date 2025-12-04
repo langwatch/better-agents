@@ -3,6 +3,9 @@ import { CursorCodingAssistantProvider } from "./cursor/index.js";
 import { AntigravityCodingAssistantProvider } from "./antigravity/index.js";
 import { KilocodeCodingAssistantProvider } from "./kilocode/index.js";
 import { NoneCodingAssistantProvider } from "./none/index.js";
+import { CrushCodingAssistantProvider } from './crush/index.js';
+import { GeminiCLICodingAssistantProvider } from './gemini-cli/index.js';
+import { QwenCodeCodingAssistantProvider } from './qwen-code/index.js';
 import { CodingAssistant } from "../../types.js";
 
 export type MCPConfigFile = {
@@ -57,6 +60,9 @@ const PROVIDERS: Record<CodingAssistant, CodingAssistantProvider> = {
   cursor: CursorCodingAssistantProvider,
   antigravity: AntigravityCodingAssistantProvider,
   none: NoneCodingAssistantProvider,
+    crush: CrushCodingAssistantProvider,
+  'gemini-cli': GeminiCLICodingAssistantProvider,
+  'qwen-code': QwenCodeCodingAssistantProvider,
 };
 
 /**
