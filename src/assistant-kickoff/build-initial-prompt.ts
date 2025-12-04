@@ -24,7 +24,7 @@ export const buildInitialPrompt = ({
   });
   const languageProvider = getLanguageProvider({ language: config.language });
 
-  const frameworkKnowledge = frameworkProvider.getKnowledge();
+  const frameworkKnowledge = frameworkProvider.getKnowledge({ config });
   const languageKnowledge = languageProvider.getKnowledge();
 
   const instructions = `You are an expert AI agent developer. This project has been set up with Better Agents best practices.
@@ -36,11 +36,10 @@ First steps:
 4. Set up the ${languageKnowledge.setupInstructions}
 5. ${frameworkKnowledge.toolingInstructions}
 6. Execute any installation steps needed yourself, for the library dependencies, the CLI tools, etc
-7. Use the LangWatch MCP to learn about prompt management and testing
-8. Start implementing the core agent functionality
-9. Instrument the agent with LangWatch
-10. Use Scenario tests to ensure the agent is working as expected, integrate with the agent and consider it done only when all scenarios pass, check scenario docs on how to implement
-11. If available from the framework, tell the user how to open a dev server give them the url they will be able to access so they can play with the agent themselves, don't run it for them
+7. Use the LangWatch MCP to learn about prompt management and scenarios
+8. Instrument the agent with LangWatch
+9. Use Scenario tests to ensure the agent is working as expected, integrate with the agent and consider it done only when all scenarios pass, check scenario docs on how to implement
+10. If available from the framework, tell the user how to open a dev server give them the url they will be able to access so they can play with the agent themselves, don't run it for them
 
 Remember:
 - The LLM and LangWatch API keys are already available in the .env file, you don't need to set them up

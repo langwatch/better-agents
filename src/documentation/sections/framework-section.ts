@@ -21,5 +21,5 @@ export const buildFrameworkSection = ({
   const frameworkProvider = getFrameworkProvider({
     framework: config.framework,
   });
-  return frameworkProvider.getKnowledge().agentsGuideSection;
+  return frameworkProvider.getKnowledge({ config }).agentsGuideSection;
 };

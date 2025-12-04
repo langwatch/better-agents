@@ -17,7 +17,7 @@
 Your coding assistant (e.g., Claude Code, Cursor, Antigravity, Kilocode CLI) is:
 - **Automatically launched** after project setup with initial prompt
 - Pre-configured with framework-specific knowledge (via MCP or docs)
-- Loaded with LangWatch best practices
+- Loaded with best practices
 - Equipped with prompt management expertise
 - Set up with testing methodologies
 - Auto-detected - the CLI shows which assistants are installed on your system

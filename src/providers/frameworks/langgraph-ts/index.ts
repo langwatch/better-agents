@@ -13,7 +13,7 @@ export const LangGraphTSFrameworkProvider: FrameworkProvider = {
 
   getKnowledge,
   getMCPConfig,
-  setup: async () => {
+  setup: async ({ projectPath, config }) => {
     // LangGraph TS doesn't need special setup files
   },
 };

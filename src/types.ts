@@ -1,6 +1,16 @@
 export type ProgrammingLanguage = 'python' | 'typescript';
-export type AgentFramework = 'agno' | 'mastra' | 'langgraph-py' | 'langgraph-ts';
-export type CodingAssistant = 'claude-code' | 'cursor' | 'antigravity' | 'kilocode' | 'none';
+export type AgentFramework =
+  | 'agno'
+  | 'mastra'
+  | 'langgraph-py'
+  | 'langgraph-ts'
+  | 'google-adk';
+export type CodingAssistant =
+  | 'claude-code'
+  | 'cursor'
+  | 'kilocode'
+  | 'antigravity'
+  | 'none';
 export type LLMProvider = 'openai' | 'anthropic' | 'gemini' | 'bedrock' | 'openrouter' | 'grok';
 
 export type ProjectConfig = {

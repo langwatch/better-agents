@@ -103,7 +103,7 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
       const frameworkProvider = getFrameworkProvider({
         framework: config.framework,
       });
-      await frameworkProvider.setup({ projectPath: absolutePath });
+      await frameworkProvider.setup({ projectPath: absolutePath, config });
       frameworkTimer();
       spinner.text = "Framework configuration set up";
 

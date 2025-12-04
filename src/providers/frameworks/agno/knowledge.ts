@@ -1,4 +1,5 @@
 import type { FrameworkKnowledge } from "../index.js";
+import type { ProjectConfig } from "../../../types.js";
 
 /**
  * Returns Agno framework knowledge for documentation and prompts.
@@ -11,7 +12,11 @@ import type { FrameworkKnowledge } from "../index.js";
  * console.log(knowledge.setupInstructions);
  * ```
  */
-export const getKnowledge = (): FrameworkKnowledge => ({
+export const getKnowledge = ({
+  config: _config,
+}: {
+  config: ProjectConfig;
+}): FrameworkKnowledge => ({
   setupInstructions: "Python w/uv + pytest",
   toolingInstructions:
     "Use the Agno MCP to learn about Agno and how to build agents",
