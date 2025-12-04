@@ -29,7 +29,7 @@ export const buildAgentsGuide = async ({
   const frameworkProvider = getFrameworkProvider({
     framework: config.framework,
   });
-  const frameworkKnowledge = frameworkProvider.getKnowledge();
+  const frameworkKnowledge = frameworkProvider.getKnowledge({ config });
 
   const content = [
     buildOverviewSection({ config }),

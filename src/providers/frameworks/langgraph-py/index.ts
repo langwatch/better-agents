@@ -8,7 +8,7 @@ export const LangGraphPyFrameworkProvider: FrameworkProvider = {
   language: "python",
   getKnowledge,
   getMCPConfig,
-  setup: async () => {
+  setup: async ({ projectPath, config }) => {
     // LangGraph Python doesn't need special setup files
   },
-};
+};  

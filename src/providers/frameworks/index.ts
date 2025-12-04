@@ -1,8 +1,9 @@
-import type { ProgrammingLanguage } from "../../types.js";
+import type { ProgrammingLanguage, ProjectConfig } from "../../types.js";
 import { AgnoFrameworkProvider } from "./agno/index.js";
 import { MastraFrameworkProvider } from "./mastra/index.js";
 import { LangGraphPyFrameworkProvider } from "./langgraph-py/index.js";
 import { LangGraphTSFrameworkProvider } from "./langgraph-ts/index.js";
+import { GoogleAdkFrameworkProvider } from "./google-adk/index.js";
 
 export type MCPServerConfig =
   | {
@@ -32,7 +33,7 @@ export type FrameworkKnowledge = {
  * @example
  * ```ts
  * const provider = getFrameworkProvider('mastra');
- * await provider.setup({ projectPath: '/path/to/project' });
+ * await provider.setup({ projectPath: '/path/to/project', config });
  * const knowledge = provider.getKnowledge();
  * ```
  */
@@ -45,13 +46,13 @@ export interface FrameworkProvider {
   readonly language: ProgrammingLanguage;
 
   /** Returns framework-specific knowledge for documentation */
-  getKnowledge(): FrameworkKnowledge;
+  getKnowledge(params: { config: ProjectConfig }): FrameworkKnowledge;
 
   /** Returns MCP server configuration if available */
   getMCPConfig?(): MCPServerConfig | null;
 
   /** Performs framework-specific setup (files, downloads, etc.) */
-  setup(params: { projectPath: string }): Promise<void>;
+  setup(params: { projectPath: string; config: ProjectConfig }): Promise<void>;
 }
 
 const PROVIDERS: Record<string, FrameworkProvider> = {
@@ -59,6 +60,7 @@ const PROVIDERS: Record<string, FrameworkProvider> = {
   mastra: MastraFrameworkProvider,
   "langgraph-py": LangGraphPyFrameworkProvider,
   "langgraph-ts": LangGraphTSFrameworkProvider,
+  "google-adk": GoogleAdkFrameworkProvider,
 };
 
 /**
