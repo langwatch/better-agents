@@ -1,9 +1,4 @@
-// add the google mcp config here   
-
 import type { MCPServerConfig } from "../index.js";
-
-
-
 
 export const getMCPConfig = (): MCPServerConfig => ({
   type: "stdio",
