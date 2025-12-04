@@ -24,7 +24,7 @@ export const buildInitialPrompt = ({
   });
   const languageProvider = getLanguageProvider({ language: config.language });
 
-  const frameworkKnowledge = frameworkProvider.getKnowledge({ config });// this is added now
+  const frameworkKnowledge = frameworkProvider.getKnowledge({ config });
   const languageKnowledge = languageProvider.getKnowledge();
 
   const instructions = `You are an expert AI agent developer. This project has been set up with Better Agents best practices.
