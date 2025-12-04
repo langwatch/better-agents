@@ -19,7 +19,7 @@ const isMac = (): boolean => {
  */
 export const CursorCodingAssistantProvider: CodingAssistantProvider = {
   id: "cursor",
-  displayName: "Cursor",
+  displayName: "Cursor Agent",
   command: "cursor-agent",
 
   async isAvailable(): Promise<{
@@ -63,11 +63,11 @@ export const CursorCodingAssistantProvider: CodingAssistantProvider = {
     if (isCurrentDir) {
       logger.userPlain('  1. Open the current folder in Cursor:');
       logger.userPlain('');
-      logger.userPlain('     cursor .');
+      logger.userPlain('     cursor-agent .');
     } else {
       logger.userPlain('  1. Open the project in Cursor:');
       logger.userPlain('');
-      logger.userPlain(`     cursor ${targetPath}`);
+      logger.userPlain(`     cursor-agent ${targetPath}`);
     }
     logger.userPlain('');
     logger.userPlain('  2. Open Cursor Composer (Cmd+I or Ctrl+I)');
