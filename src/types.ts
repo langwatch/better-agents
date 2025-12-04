@@ -5,7 +5,12 @@ export type AgentFramework =
   | 'langgraph-py'
   | 'langgraph-ts'
   | 'google-adk';
-export type CodingAssistant = 'claude-code' | 'cursor' | 'kilocode' | 'none';
+export type CodingAssistant =
+  | 'claude-code'
+  | 'cursor'
+  | 'kilocode'
+  | 'antigravity'
+  | 'none';
 export type LLMProvider = 'openai' | 'anthropic' | 'gemini' | 'bedrock' | 'openrouter' | 'grok';
 
 export type ProjectConfig = {
