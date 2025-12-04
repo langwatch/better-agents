@@ -10,7 +10,7 @@ import { setupEditorConfigs } from "../builders/editor-setup-builder.js";
 import { setupAntigravityMCPConfig } from "../providers/coding-assistants/antigravity/index.js";
 import { kickoffAssistant } from "../assistant-kickoff/kickoff-assistant.js";
 import { LoggerFacade } from "../utils/logger/logger-facade.js";
-import type { ProjectConfig } from "../types.js";
+import type { ProjectConfig, CLIOptions } from "../types.js";
 
 /**
  * Displays a static banner with ASCII art
@@ -42,16 +42,22 @@ const showBanner = (): void => {
  * Initializes a new agent project with best practices.
  *
  * @param targetPath - Path where the project should be created (relative to cwd)
+ * @param cliOptions - CLI options for non-interactive mode
  * @param debug - Whether to enable debug logging
  * @returns Promise that resolves when initialization is complete
  *
  * @example
  * ```ts
  * await initCommand('my-agent-project');
- * await initCommand('my-agent-project', true); // with debug logging
+ * await initCommand('my-agent-project', {}, true); // with debug logging
+ * await initCommand('my-agent-project', { language: 'python', framework: 'agno', ... }, false); // non-interactive
  * ```
  */
-export const initCommand = async (targetPath: string, debug = false): Promise<void> => {
+export const initCommand = async (
+  targetPath: string,
+  cliOptions: CLIOptions = {},
+  debug = false
+): Promise<void> => {
   // Set debug environment variable for logger detection
   if (debug) {
     process.env.SUPERAGENTS_DEBUG = 'true';
@@ -61,11 +67,13 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
   const logger = new LoggerFacade();
 
   try {
-    // Show banner
-    showBanner();
+    // Show banner (skip in fully non-interactive mode for cleaner output)
+    if (!cliOptions.yes) {
+      showBanner();
+    }
 
     const configTimer = logger.startTimer('config-collection');
-    const config: ProjectConfig = await collectConfig();
+    const config: ProjectConfig = await collectConfig(cliOptions);
     configTimer();
 
     const absolutePath = path.resolve(process.cwd(), targetPath);
