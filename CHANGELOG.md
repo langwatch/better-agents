@@ -5,6 +5,19 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.19](https://github.com/langwatch/better-agents/compare/v0.1.18...v0.1.19) (2025-12-04)
+
+
+### Features
+
+* add Antigravity coding assistant support ([#51](https://github.com/langwatch/better-agents/issues/51)) ([732bc2c](https://github.com/langwatch/better-agents/commit/732bc2c2d883a9c2e1f7557603c76590c7833574))
+* google adk ([#61](https://github.com/langwatch/better-agents/issues/61)) ([5900fef](https://github.com/langwatch/better-agents/commit/5900fef97a1ad74afce8de0181892d0d639c7333))
+
+
+### Bug Fixes
+
+* gitattributes ([74cbbb3](https://github.com/langwatch/better-agents/commit/74cbbb32469c68b0050c5f5afa36e388fc5ccc59))
+
 ## [0.1.18](https://github.com/langwatch/better-agents/compare/v0.1.17...v0.1.18) (2025-12-02)
 
 
