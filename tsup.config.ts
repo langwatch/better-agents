@@ -16,7 +16,6 @@ export default defineConfig({
     'chalk',
     'commander',
     'ora',
-    'posix',
   ],
   treeshake: true,
   minify: false,

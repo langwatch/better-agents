@@ -15,7 +15,7 @@ const program = new Command();
 program
   .name("better-agents")
   .description(
-    "CLI for kicking off production-ready agent projects with LangWatch best practices"
+    "CLI for kicking off production-ready agent projects with the Better Agents standard"
   )
   .version(packageJson.version)
   .option("-d, --debug", "Enable debug logging with structured JSON output");
