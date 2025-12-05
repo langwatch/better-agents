@@ -114,7 +114,7 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
       // Build MCP config and set up all editor configurations
       const editorTimer = projectLogger.startTimer('editor-setup');
       const mcpConfig = buildMCPConfig({ config });
-      await setupEditorConfigs({ projectPath: absolutePath, mcpConfig });
+      await setupEditorConfigs({ projectPath: absolutePath, mcpConfig, config });
 
       // Special handling for Antigravity - uses user home config instead of project
       if (config.codingAssistant === 'antigravity') {

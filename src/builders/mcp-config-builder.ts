@@ -39,6 +39,10 @@ export const buildMCPConfig = ({
     mcpConfig.mcpServers[frameworkProvider.id] = frameworkMCP;
   }
 
+  // Note: Coding assistants don't add MCP servers here - they use CLI-specific
+  // config files (e.g., ~/.gemini/settings.json, crush.json) which are handled
+  // by cli-config-builder.ts
+
   return mcpConfig;
 };
 

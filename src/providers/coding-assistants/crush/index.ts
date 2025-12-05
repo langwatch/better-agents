@@ -1,5 +1,6 @@
-import { logger } from '../../utils/logger/index.js';
+import { logger } from '../../../utils/logger/index.js';
 import type { CodingAssistantProvider } from '../index.js';
+import type { MCPServerConfig } from "../../../providers/frameworks/index.js";
 
 /**
  * Crush CLI coding assistant provider.
@@ -13,35 +14,32 @@ export const CrushCodingAssistantProvider: CodingAssistantProvider = {
   async isAvailable() {
     return {
       installed: true,
-      installCommand: 'npm install -g crush',
+      installCommand: 'npm install -g @charmland/crush',
     };
   },
 
   async launch({ projectPath, targetPath, prompt }) {
+    // Always show manual instructions - never auto-launch Crush
     const isCurrentDir = targetPath === '.';
 
     logger.userPlain('');
-    logger.userPlain('To get started with Crush:');
+    logger.userPlain('💘 Launch Crush');
     logger.userPlain('');
-
+    
     if (isCurrentDir) {
-      logger.userPlain(' 1. Run Crush in the current directory:');
+      logger.userPlain('  Run:');
       logger.userPlain('');
-      logger.userPlain('    crush .');
+      logger.userPlain('    crush');
     } else {
-      logger.userPlain(' 1. Navigate to the project:');
+      logger.userPlain('  Navigate to project and run via the following commands:');
       logger.userPlain('');
       logger.userPlain(`    cd ${targetPath}`);
-      logger.userPlain('');
-      logger.userPlain(' 2. Run Crush:');
-      logger.userPlain('');
-      logger.userPlain('    crush .');
+      logger.userPlain('    crush');
     }
-
+    
     logger.userPlain('');
-    logger.userPlain(' 3. Follow Crush interactive prompts with guidance:');
-    logger.userPlain('');
-    logger.userPlain(`    ${prompt}`);
+    logger.userPlain('  Then paste the prompt above when Crush starts.');
     logger.userPlain('');
   },
+
 };

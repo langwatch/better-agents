@@ -1,6 +1,8 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import type { MCPConfigFile } from "../providers/coding-assistants/index.js";
+import type { ProjectConfig } from "../types.js";
+import { setupCLIConfigs } from "./cli-config-builder.js";
 
 /**
  * Sets up all AI coding editor configurations for the project.
@@ -27,9 +29,11 @@ import type { MCPConfigFile } from "../providers/coding-assistants/index.js";
 export const setupEditorConfigs = async ({
   projectPath,
   mcpConfig,
+  config,
 }: {
   projectPath: string;
   mcpConfig: MCPConfigFile;
+  config: ProjectConfig;
 }): Promise<void> => {
   // 1. Write root .mcp.json (universal standard)
   const mcpConfigPath = path.join(projectPath, ".mcp.json");
@@ -54,5 +58,8 @@ export const setupEditorConfigs = async ({
   const claudeMdPath = path.join(projectPath, "CLAUDE.md");
   const claudeMdContent = `@AGENTS.md\n`;
   await fs.writeFile(claudeMdPath, claudeMdContent);
+
+  // 4. Write CLI-specific config files (for gemini-cli, crush, qwen-code)
+  await setupCLIConfigs({ projectPath, config, mcpConfig });
 };
 

@@ -7,6 +7,7 @@ import { CrushCodingAssistantProvider } from './crush/index.js';
 import { GeminiCLICodingAssistantProvider } from './gemini-cli/index.js';
 import { QwenCodeCodingAssistantProvider } from './qwen-code/index.js';
 import { CodingAssistant } from "../../types.js";
+import type { MCPServerConfig } from "../frameworks/index.js";
 
 export type MCPConfigFile = {
   mcpServers: Record<
@@ -59,10 +60,11 @@ const PROVIDERS: Record<CodingAssistant, CodingAssistantProvider> = {
   "claude-code": ClaudeCodingAssistantProvider,
   cursor: CursorCodingAssistantProvider,
   antigravity: AntigravityCodingAssistantProvider,
-  none: NoneCodingAssistantProvider,
+  
     crush: CrushCodingAssistantProvider,
   'gemini-cli': GeminiCLICodingAssistantProvider,
   'qwen-code': QwenCodeCodingAssistantProvider,
+  none: NoneCodingAssistantProvider,
 };
 
 /**

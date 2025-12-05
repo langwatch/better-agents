@@ -1,4 +1,4 @@
-import { logger } from '../../utils/logger/index.js';
+import { logger } from '../../../utils/logger/index.js';
 import type { CodingAssistantProvider } from '../index.js';
 
 /**
@@ -8,16 +8,17 @@ import type { CodingAssistantProvider } from '../index.js';
 export const QwenCodeCodingAssistantProvider: CodingAssistantProvider = {
   id: 'qwen-code',
   displayName: 'Qwen Code',
-  command: 'qwen-code',
+  command: 'qwen',
 
   async isAvailable() {
     return {
       installed: true,
-      installCommand: 'npm install -g @alibabacloud/qwen-code-cli',
+      installCommand: 'npm install -g @qwenlm/qwen-code',
     };
   },
 
   async launch({ projectPath, targetPath, prompt }) {
+    // Always show manual instructions - never auto-launch Qwen Code
     const isCurrentDir = targetPath === '.';
 
     logger.userPlain('');
@@ -25,25 +26,19 @@ export const QwenCodeCodingAssistantProvider: CodingAssistantProvider = {
     logger.userPlain('');
 
     if (isCurrentDir) {
-      logger.userPlain(' 1. Start Qwen Code in the current directory:');
+      logger.userPlain('  Run:');
       logger.userPlain('');
-      logger.userPlain('    qwen-code .');
+      logger.userPlain('    qwen');
     } else {
-      logger.userPlain(' 1. Navigate to the project:');
+      logger.userPlain('  Navigate to project and run:');
       logger.userPlain('');
       logger.userPlain(`    cd ${targetPath}`);
-      logger.userPlain('');
-      logger.userPlain(' 2. Start Qwen Code:');
-      logger.userPlain('');
-      logger.userPlain('    qwen-code .');
+      logger.userPlain('    qwen');
     }
 
     logger.userPlain('');
-    logger.userPlain(' 3. When prompted, provide development context:');
-    logger.userPlain('');
-    logger.userPlain(`    ${prompt}`);
-    logger.userPlain('');
-    logger.userPlain(' 4. Select your preferred Qwen model version');
+    logger.userPlain('  Then paste the prompt above when Qwen Code starts.');
     logger.userPlain('');
   },
+
 };
