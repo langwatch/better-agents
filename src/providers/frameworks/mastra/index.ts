@@ -13,7 +13,7 @@ export const MastraFrameworkProvider: FrameworkProvider = {
 
   getKnowledge,
   getMCPConfig,
-  setup: async ({ projectPath, config }) => {
+  setup: async () => {
     // Mastra doesn't need special setup files
   },
 };

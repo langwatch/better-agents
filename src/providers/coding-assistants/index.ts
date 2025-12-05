@@ -7,7 +7,6 @@ import { CrushCodingAssistantProvider } from './crush/index.js';
 import { GeminiCLICodingAssistantProvider } from './gemini-cli/index.js';
 import { QwenCodeCodingAssistantProvider } from './qwen-code/index.js';
 import { CodingAssistant } from "../../types.js";
-import type { MCPServerConfig } from "../frameworks/index.js";
 
 export type MCPConfigFile = {
   mcpServers: Record<

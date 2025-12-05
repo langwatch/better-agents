@@ -17,7 +17,7 @@ export const QwenCodeCodingAssistantProvider: CodingAssistantProvider = {
     };
   },
 
-  async launch({ projectPath, targetPath, prompt }) {
+  async launch({ targetPath }) {
     // Always show manual instructions - never auto-launch Qwen Code
     const isCurrentDir = targetPath === '.';
 

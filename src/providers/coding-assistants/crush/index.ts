@@ -1,6 +1,5 @@
 import { logger } from '../../../utils/logger/index.js';
 import type { CodingAssistantProvider } from '../index.js';
-import type { MCPServerConfig } from "../../../providers/frameworks/index.js";
 
 /**
  * Crush CLI coding assistant provider.
@@ -18,7 +17,7 @@ export const CrushCodingAssistantProvider: CodingAssistantProvider = {
     };
   },
 
-  async launch({ projectPath, targetPath, prompt }) {
+  async launch({ targetPath }) {
     // Always show manual instructions - never auto-launch Crush
     const isCurrentDir = targetPath === '.';
 

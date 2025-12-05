@@ -16,7 +16,7 @@ export const GoogleAdkFrameworkProvider: FrameworkProvider = {
   getKnowledge,
   getMCPConfig,
   // setup,
-  setup: async ({ projectPath, config }) => {
+  setup: async () => {
     // Google ADK doesn't need special setup files
     // TODO: Implement setup for Google ADK
   },
