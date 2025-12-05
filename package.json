@@ -77,8 +77,7 @@
     "commander": "^12.1.0",
     "ora": "^8.1.1",
     "pino": "^10.1.0",
-    "pino-pretty": "^13.1.2",
-    "posix": "^4.2.0"
+    "pino-pretty": "^13.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
