@@ -4,6 +4,7 @@ import { MastraFrameworkProvider } from "./mastra/index.js";
 import { LangGraphPyFrameworkProvider } from "./langgraph-py/index.js";
 import { LangGraphTSFrameworkProvider } from "./langgraph-ts/index.js";
 import { GoogleAdkFrameworkProvider } from "./google-adk/index.js";
+import { VercelAIFrameworkProvider } from "./vercel-ai/index.js";
 
 export type MCPServerConfig =
   | {
@@ -61,6 +62,7 @@ const PROVIDERS: Record<string, FrameworkProvider> = {
   "langgraph-py": LangGraphPyFrameworkProvider,
   "langgraph-ts": LangGraphTSFrameworkProvider,
   "google-adk": GoogleAdkFrameworkProvider,
+  "vercel-ai": VercelAIFrameworkProvider,
 };
 
 /**
