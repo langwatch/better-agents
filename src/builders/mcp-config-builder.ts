@@ -36,9 +36,7 @@ export const buildMCPConfig = ({
   });
   const frameworkMCP = frameworkProvider.getMCPConfig?.();
   if (frameworkMCP) {
-    // Use "vercel" as server name for vercel-ai framework to match expected config
-    const serverName = config.framework === "vercel-ai" ? "vercel" : frameworkProvider.id;
-    mcpConfig.mcpServers[serverName] = frameworkMCP;
+    mcpConfig.mcpServers[frameworkProvider.id] = frameworkMCP;
   }
 
   return mcpConfig;
