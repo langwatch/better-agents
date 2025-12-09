@@ -50,9 +50,7 @@ export const setupCLIConfigs = async ({
       // File doesn't exist, start fresh
     }
 
-    // Replace MCP servers with current project's config (don't merge with existing)
-    // This ensures only the selected framework's MCP is included, not previous projects
-    geminiConfig.mcpServers = mcpConfig.mcpServers;
+    geminiConfig.mcpServers = JSON.parse(JSON.stringify(mcpConfig.mcpServers));
 
     await fs.writeFile(
       geminiConfigPath,
@@ -140,9 +138,7 @@ export const setupCLIConfigs = async ({
       // File doesn't exist, start fresh
     }
 
-    // Replace MCP servers with current project's config (don't merge with existing)
-    // This ensures only the selected framework's MCP is included, not previous projects
-    geminiConfig.mcpServers = mcpConfig.mcpServers;
+    geminiConfig.mcpServers = JSON.parse(JSON.stringify(mcpConfig.mcpServers));
 
     await fs.writeFile(
       geminiConfigPath,

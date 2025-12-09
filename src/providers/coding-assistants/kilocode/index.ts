@@ -41,7 +41,13 @@ export const KilocodeCodingAssistantProvider: CodingAssistantProvider = {
         cwd: projectPath,
       });
       logger.userSuccess("Session complete!");
-    } catch {
+    } catch (error) {
+      // Log to debug logger for troubleshooting
+      if (error instanceof Error) {
+        logger.error(error, { step: "kilocode-launch-failed" });
+      } else {
+        logger.debug("kilocode-launch-failed", { error: String(error) });
+      }
       logger.userWarning(`Could not auto-launch ${this.displayName}.`);
       showManualLaunchInstructions({
         targetPath,

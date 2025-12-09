@@ -1,3 +1,4 @@
+import { CliUtils } from '../../../utils/cli.util.js';
 import { logger } from '../../../utils/logger/index.js';
 import type { CodingAssistantProvider } from '../index.js';
 
@@ -11,9 +12,10 @@ export const QwenCodeCodingAssistantProvider: CodingAssistantProvider = {
   command: 'qwen',
 
   async isAvailable() {
+    const installed = await CliUtils.isCommandAvailable("qwen");
     return {
-      installed: true,
-      installCommand: 'npm install -g @qwenlm/qwen-code',
+      installed,
+      installCommand: installed ? undefined : 'npm install -g @qwenlm/qwen-code',
     };
   },
 

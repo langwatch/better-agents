@@ -1,3 +1,4 @@
+import { CliUtils } from '../../../utils/cli.util.js';
 import { logger } from '../../../utils/logger/index.js';
 import type { CodingAssistantProvider } from '../index.js';
 
@@ -11,9 +12,10 @@ export const CrushCodingAssistantProvider: CodingAssistantProvider = {
   command: 'crush',
 
   async isAvailable() {
+    const installed = await CliUtils.isCommandAvailable("crush");
     return {
-      installed: true,
-      installCommand: 'npm install -g @charmland/crush',
+      installed,
+      installCommand: installed ? undefined : 'npm install -g @charmland/crush',
     };
   },
 

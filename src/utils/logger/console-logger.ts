@@ -42,7 +42,7 @@ export class ConsoleLogger {
    */
   private detectDebugMode(): boolean {
     return Boolean(
-      process.env.SUPERAGENTS_DEBUG ||
+      process.env.BETTERAGENTS_DEBUG ||
       process.argv.includes("--debug") ||
       process.argv.includes("-d")
     );

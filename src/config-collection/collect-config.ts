@@ -170,6 +170,25 @@ export const collectConfig = async (): Promise<ProjectConfig> => {
       }
     }
 
+    // Check for Gemini API key if using Gemini CLI
+    if (codingAssistant === "gemini-cli") {
+      if (!process.env.GEMINI_API_KEY) {
+        logger.userInfo("When using Gemini API, you must specify the GEMINI_API_KEY environment variable.");
+        const geminiApiKey = await password({
+          message: "Enter your Gemini API key:",
+          mask: "*",
+          validate: (value) => {
+            if (!value || value.length < 5) {
+              return "API key is required and must be at least 5 characters";
+            }
+            return true;
+          },
+        });
+        process.env.GEMINI_API_KEY = geminiApiKey;
+        logger.userInfo("GEMINI_API_KEY has been set for this session.");
+      }
+    }
+
     logger.userInfo("✔︎ Your coding assistant will finish setup later if needed\n");
 
     logger.userInfo("To get your LangWatch API key, visit:");

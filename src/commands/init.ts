@@ -54,7 +54,7 @@ const showBanner = (): void => {
 export const initCommand = async (targetPath: string, debug = false): Promise<void> => {
   // Set debug environment variable for logger detection
   if (debug) {
-    process.env.SUPERAGENTS_DEBUG = 'true';
+    process.env.BETTERAGENTS_DEBUG = 'true';
   }
 
   // Create project-specific logger for debug logging

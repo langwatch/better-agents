@@ -1,16 +1,8 @@
-import * as os from "node:os";
+import { CliUtils } from '../../../utils/cli.util.js';
+import { OSUtils } from '../../../utils/os.util.js';
 import { ProcessUtils } from "../../../utils/process.util.js";
 import { logger } from '../../../utils/logger/index.js';
 import type { CodingAssistantProvider } from '../index.js';
-
-/**
- * Checks if we're running on a Unix platform (Mac/Linux/WSL).
- *
- * @returns true if running on Unix platform, false otherwise
- */
-const isUnix = (): boolean => {
-  return os.platform() !== "win32";
-};
 
 /**
  * Google Gemini CLI coding assistant provider.
@@ -22,22 +14,29 @@ export const GeminiCLICodingAssistantProvider: CodingAssistantProvider = {
   command: 'gemini',
 
   async isAvailable() {
+    const installed = await CliUtils.isCommandAvailable("gemini");
     return {
-      installed: true,
-      installCommand: 'npm install -g @google/gemini-cli',
+      installed,
+      installCommand: installed ? undefined : 'npm install -g @google/gemini-cli',
     };
   },
 
   async launch({ projectPath, targetPath, prompt }) {
     // Try auto-launch with prompt on Unix platforms (Mac/Linux/WSL)
-    if (isUnix()) {
+    if (OSUtils.isUnix) {
       try {
         logger.userInfo(`🤖 Launching ${this.displayName}...`);
         // Use -p flag for non-interactive mode with prompt
         ProcessUtils.launchWithTerminalControl("gemini", ["-p", prompt], { cwd: projectPath });
         logger.userSuccess("Session complete!");
         return;
-      } catch {
+      } catch (error) {
+        // Log to debug logger for troubleshooting
+        if (error instanceof Error) {
+          logger.error(error, { step: "gemini-launch-failed" });
+        } else {
+          logger.debug("gemini-launch-failed", { error: String(error) });
+        }
         logger.userWarning(`Could not auto-launch ${this.displayName}.`);
         // Fall through to manual instructions
       }
