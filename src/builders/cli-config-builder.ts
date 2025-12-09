@@ -50,7 +50,7 @@ export const setupCLIConfigs = async ({
       // File doesn't exist, start fresh
     }
 
-    geminiConfig.mcpServers = JSON.parse(JSON.stringify(mcpConfig.mcpServers));
+    geminiConfig.mcpServers = structuredClone(mcpConfig.mcpServers)
 
     await fs.writeFile(
       geminiConfigPath,
