@@ -1,6 +1,6 @@
 {
   "name": "@langwatch/better-agents",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "CLI for kicking off production-ready agent projects with LangWatch best practices",
   "type": "module",
   "main": "./dist/index.js",
