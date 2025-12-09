@@ -4,7 +4,8 @@ export type AgentFramework =
   | 'mastra'
   | 'langgraph-py'
   | 'langgraph-ts'
-  | 'google-adk';
+  | 'google-adk'
+  | 'vercel-ai';
 export type CodingAssistant =
   | 'claude-code'
   | 'cursor'
