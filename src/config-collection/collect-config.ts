@@ -99,6 +99,16 @@ export const collectConfig = async (): Promise<ProjectConfig> => {
       }
     }
 
+    logger.userInfo("To get your LangWatch API key, visit:");
+    logger.userInfo("https://app.langwatch.ai/authorize");
+
+    const langwatchApiKey = await password({
+      message:
+        "Enter your LangWatch API key (for prompt management, scenarios, evaluations and observability):",
+      mask: "*",
+      validate: validateLangWatchKey,
+    });
+
     const codingAssistant = await select<CodingAssistant>({
       message:
         "What is your preferred coding assistant for building the agent?",
@@ -190,16 +200,6 @@ export const collectConfig = async (): Promise<ProjectConfig> => {
     }
 
     logger.userInfo("✔︎ Your coding assistant will finish setup later if needed\n");
-
-    logger.userInfo("To get your LangWatch API key, visit:");
-    logger.userInfo("https://app.langwatch.ai/authorize");
-
-    const langwatchApiKey = await password({
-      message:
-        "Enter your LangWatch API key (for prompt management, scenarios, evaluations and observability):",
-      mask: "*",
-      validate: validateLangWatchKey,
-    });
 
     const projectGoal = await input({
       message: "What is your agent going to do?",
