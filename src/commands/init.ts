@@ -1,5 +1,6 @@
 import * as fs from "fs/promises";
 import * as path from "path";
+import os from "os";
 import { collectConfig } from "../config-collection/collect-config.js";
 import { createProjectStructure } from "../project-scaffolding/create-project-structure.js";
 import { ensureGitignore } from "../project-scaffolding/file-generators/gitignore-generator.js";
@@ -10,6 +11,12 @@ import { setupEditorConfigs } from "../builders/editor-setup-builder.js";
 import { setupAntigravityMCPConfig } from "../providers/coding-assistants/antigravity/index.js";
 import { kickoffAssistant } from "../assistant-kickoff/kickoff-assistant.js";
 import { LoggerFacade } from "../utils/logger/logger-facade.js";
+import {
+  trackEvent,
+  shutdown,
+  isTelemetryDisabled,
+  isAnalyticsEnabled,
+} from "../analytics/index.js";
 import type { ProjectConfig } from "../types.js";
 
 /**
@@ -60,12 +67,71 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
   // Create project-specific logger for debug logging
   const logger = new LoggerFacade();
 
+  const startTime = Date.now();
+  let config: ProjectConfig | undefined;
+  let spinner: ReturnType<LoggerFacade['startSpinner']> | undefined;
+
+  const telemetryNoticePath = path.join(
+    os.homedir(),
+    ".better-agents",
+    "telemetry-notice.json"
+  );
+
+  const telemetryMessage = async (): Promise<void> => {
+    if (isTelemetryDisabled()) {
+      console.log("Telemetry: disabled via BETTER_AGENTS_TELEMETRY");
+      return;
+    }
+    if (isAnalyticsEnabled()) {
+      // Show detailed notice only on first run
+      let shown = false;
+      try {
+        const raw = await fs.readFile(telemetryNoticePath, "utf8");
+        const parsed = JSON.parse(raw);
+        shown = Boolean(parsed?.shown);
+      } catch {
+        shown = false;
+      }
+
+      if (!shown) {
+        console.log(
+          [
+            "",
+            "🛰️  Telemetry",
+            "  Better Agents collects anonymous usage data (no prompts, messages, or secrets)",
+            "  to understand feature usage and improve stability.",
+            "  Disable anytime with: BETTER_AGENTS_TELEMETRY=0",
+            "",
+          ].join("\n")
+        );
+        try {
+          await fs.mkdir(path.dirname(telemetryNoticePath), { recursive: true });
+          await fs.writeFile(
+            telemetryNoticePath,
+            JSON.stringify({ shown: true, at: Date.now() })
+          );
+        } catch {
+          // ignore persistence errors
+        }
+      } else {
+        console.log("Telemetry: enabled (set BETTER_AGENTS_TELEMETRY=0 to disable)");
+      }
+      return;
+    }
+    // If no API key, stay silent
+  };
+
   try {
     // Show banner
     showBanner();
+    await telemetryMessage();
+
+    // Track CLI init started
+    const pathType = targetPath === "." ? "current" : "new";
+    await trackEvent("cli_init_started", { pathType });
 
     const configTimer = logger.startTimer('config-collection');
-    const config: ProjectConfig = await collectConfig();
+    config = await collectConfig();
     configTimer();
 
     const absolutePath = path.resolve(process.cwd(), targetPath);
@@ -74,7 +140,7 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
     const projectLogger = new LoggerFacade(absolutePath);
 
     // Start spinner using logger's spinner management
-    const spinner = projectLogger.startSpinner("Setting up your agent project...");
+    spinner = projectLogger.startSpinner("Setting up your agent project...");
 
     try {
       projectLogger.info('init-started', {
@@ -139,18 +205,46 @@ export const initCommand = async (targetPath: string, debug = false): Promise<vo
         success: true
       });
 
+      // Kickoff assistant (waits for completion on Mac, shows instructions on Windows)
       await kickoffAssistant({ projectPath: absolutePath, targetPath, config });
+
+      // No completion event emitted (per request)
+      await shutdown();
     } catch (error) {
-      spinner.fail("Failed to set up project");
+      spinner?.fail?.("Failed to set up project");
 
       projectLogger.error(error as Error, {
         step: 'project-setup',
         projectPath: absolutePath
       });
 
+      // Track failure during project setup
+      await trackEvent("cli_init_failed", {
+        language: config?.language,
+        framework: config?.framework,
+        codingAssistant: config?.codingAssistant,
+        llmProvider: config?.llmProvider,
+        step: "project-setup",
+        errorType: error instanceof Error ? error.name : "Unknown",
+        durationSec: (Date.now() - startTime) / 1000,
+        success: false,
+      });
+      await shutdown();
+
       throw error;
     }
   } catch (error) {
+    // Track failure if config was not collected (early failure)
+    if (!config) {
+      await trackEvent("cli_init_failed", {
+        step: "config-collection",
+        errorType: error instanceof Error ? error.name : "Unknown",
+        durationSec: (Date.now() - startTime) / 1000,
+        success: false,
+      });
+      await shutdown();
+    }
+
     if (error instanceof Error) {
       logger.userError(`Error: ${error.message}`);
     } else {

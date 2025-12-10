@@ -15,6 +15,7 @@ import { getAllCodingAssistants } from "../providers/coding-assistants/index.js"
 import { validateOpenAIKey } from "./validators/openai-key.js";
 import { validateLangWatchKey } from "./validators/langwatch-key.js";
 import { validateProjectGoal } from "./validators/project-goal.js";
+import { trackEvent, trackEventAndShutdown } from "../analytics/index.js";
 
 /**
  * Collects project configuration from user via interactive CLI prompts.
@@ -28,6 +29,7 @@ import { validateProjectGoal } from "./validators/project-goal.js";
  * ```
  */
 export const collectConfig = async (): Promise<ProjectConfig> => {
+  const configStart = Date.now();
   try {
     logger.userInfo(
       "Setting up your agent project following the Better Agent Structure.\n"
@@ -66,7 +68,7 @@ export const collectConfig = async (): Promise<ProjectConfig> => {
       validate:
         llmProvider === "openai"
           ? validateOpenAIKey
-          : (value) => {
+          : (value: string) => {
               if (!value || value.length < 5) {
                 return "API key is required and must be at least 5 characters";
               }
@@ -206,6 +208,15 @@ export const collectConfig = async (): Promise<ProjectConfig> => {
       validate: validateProjectGoal,
     });
 
+    // Treat prompt_shown as "configuration done" to avoid redundant events
+    await trackEvent("cli_prompt_shown", {
+      language,
+      framework,
+      codingAssistant,
+      llmProvider,
+      durationSec: (Date.now() - configStart) / 1000,
+    });
+
     return {
       language,
       framework,
@@ -218,7 +229,15 @@ export const collectConfig = async (): Promise<ProjectConfig> => {
     };
   } catch (error) {
     if (error instanceof Error && error.message.includes("User force closed")) {
+      // User pressed Ctrl+C during prompts
       logger.userWarning("Setup cancelled by user");
+      // Track cancellation directly here since inquirer intercepts SIGINT
+      await trackEventAndShutdown("cli_init_failed", {
+        step: "config-collection",
+        errorType: "cancelled",
+        durationSec: (Date.now() - configStart) / 1000,
+        success: false,
+      });
       process.exit(0);
     }
     throw error;
