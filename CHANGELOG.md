@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * cursor-agent(mac) ([#59](https://github.com/langwatch/better-agents/issues/59)) ([75f51f7](https://github.com/langwatch/better-agents/commit/75f51f760346e35758348cafec4d6aac0a04f7da))
 * vercel-ai ([#70](https://github.com/langwatch/better-agents/issues/70)) ([8aa9b11](https://github.com/langwatch/better-agents/commit/8aa9b11b98f8c16b6cfa2a2a61aa54793a4d9b09))
+* add support for crush, gemini-cli and qwen-code ([#69](https://github.com/langwatch/better-agents/issues/69)) ([1567975](https://github.com/langwatch/better-agents/commit/1567975d67fc43ac5eb3dd88b32ad4aee1387615))
 
 
 ### Bug Fixes
@@ -20,9 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * windows posix ([#68](https://github.com/langwatch/better-agents/issues/68)) ([a9bd869](https://github.com/langwatch/better-agents/commit/a9bd869ecdd1516aeb6880877ead7cf46d52b7f3))
 
 
-### Miscellaneous
-
-* fixing cli ([#69](https://github.com/langwatch/better-agents/issues/69)) ([1567975](https://github.com/langwatch/better-agents/commit/1567975d67fc43ac5eb3dd88b32ad4aee1387615))
 
 ## [0.1.19](https://github.com/langwatch/better-agents/compare/v0.1.18...v0.1.19) (2025-12-04)
 
