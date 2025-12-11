@@ -110,32 +110,6 @@ The CLI will guide you through selecting your programming language, agent framew
   - LangWatch API key (get one at https://app.langwatch.ai/authorize)
   - Your chosen LLM Provider API key
 
-## Environment Variables
-
-Better Agents uses environment variables for API keys. Set the following based on your chosen provider:
-
-### Required for all projects
-- `LANGWATCH_API_KEY` - Your LangWatch API key ([get it here](https://app.langwatch.ai/authorize))
-
-### LLM Provider API Keys (choose based on `--llm-provider`)
-- **OpenAI**: `OPENAI_API_KEY`
-- **Anthropic**: `ANTHROPIC_API_KEY`
-- **Gemini**: `GOOGLE_API_KEY` or `GEMINI_API_KEY`
-- **AWS Bedrock**: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` (optional)
-- **OpenRouter**: `OPENROUTER_API_KEY`
-- **Grok**: `XAI_API_KEY`
-
-### Coding Assistant Keys (only if needed)
-- **gemini-cli**: `GEMINI_API_KEY`
-
-### Examples
-
-```bash
-LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." better-agents init
-```
-
-For more provider-specific examples (Anthropic, Gemini, Bedrock, etc.), see the detailed usage guide in `docs/USAGE.md`.
-
 ## Resources
 
 - [LangWatch](https://langwatch.ai)
