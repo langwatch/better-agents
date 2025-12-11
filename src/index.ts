@@ -44,11 +44,10 @@ Environment variables (set before running):
     gemini-cli                    GEMINI_API_KEY="..." (only if using --coding-assistant gemini-cli)
 
 Examples:
-  # Minimal setup with OpenAI in current directory
-  LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." \
+  # Minimal setup in current directory, interactive mode
     better-agents init
 
-  # Python + Agno + Anthropic + Cursor in explicit path
+  # Python + Agno + Anthropic + Cursor in explicit path, non-interactive mode
   LANGWATCH_API_KEY="sk-lw-..." ANTHROPIC_API_KEY="sk-ant-..." \
     better-agents init . \
       --language python \
@@ -57,7 +56,7 @@ Examples:
       --coding-assistant cursor \
       --goal "Build a trading agent"
 
-  # Bedrock with custom AWS region
+  # Bedrock with custom AWS region, non-interactive mode
   LANGWATCH_API_KEY="sk-lw-..." AWS_ACCESS_KEY_ID="..." AWS_SECRET_ACCESS_KEY="..." \
     better-agents init \
       --llm-provider bedrock \
