@@ -5,13 +5,8 @@
 Better Agents supports two modes of operation:
 
 ### Interactive Mode
-Prompts for any missing configuration. API keys can be provided via environment variables or entered when prompted.
 
 ```bash
-# With environment variables (recommended)
-LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." better-agents init .
-
-# Or let the CLI prompt for API keys
 better-agents init my-awesome-agent
 ```
 
