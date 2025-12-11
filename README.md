@@ -74,6 +74,17 @@ better-agents init my-awesome-agent
 
 The CLI will guide you through selecting your programming language, agent framework, coding assistant, LLM provider, and API keys.
 
+## Documentation
+
+- **[Getting Started](docs/GETTING-STARTED.md)** - Quick start guide (2 minutes)
+- **[Walkthrough](docs/WALKTHROUGH.md)** - Detailed step-by-step guide
+- **[Project Structure](docs/STRUCTURE.md)** - Understanding the Better Agent structure
+- **[Features](docs/FEATURES.md)** - Key features and capabilities
+- **[Usage](docs/USAGE.md)** - CLI usage and examples
+- **[Philosophy](docs/PHILOSOPHY.md)** - Agent Testing Pyramid approach
+- **[Contributing](docs/CONTRIBUTING.md)** - How to contribute to Better Agents
+- **[Changelog](CHANGELOG.md)** - Version history
+
 ## Requirements
 
 - Node.js 22+
