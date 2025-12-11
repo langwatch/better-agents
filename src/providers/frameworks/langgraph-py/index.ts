@@ -11,4 +11,4 @@ export const LangGraphPyFrameworkProvider: FrameworkProvider = {
   setup: async () => {
     // LangGraph Python doesn't need special setup files
   },
-};
+};  

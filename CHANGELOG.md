@@ -5,6 +5,36 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.20](https://github.com/langwatch/better-agents/compare/v0.1.19...v0.1.20) (2025-12-09)
+
+
+### Features
+
+* cursor-agent(mac) ([#59](https://github.com/langwatch/better-agents/issues/59)) ([75f51f7](https://github.com/langwatch/better-agents/commit/75f51f760346e35758348cafec4d6aac0a04f7da))
+* vercel-ai ([#70](https://github.com/langwatch/better-agents/issues/70)) ([8aa9b11](https://github.com/langwatch/better-agents/commit/8aa9b11b98f8c16b6cfa2a2a61aa54793a4d9b09))
+* add support for crush, gemini-cli and qwen-code ([#69](https://github.com/langwatch/better-agents/issues/69)) ([1567975](https://github.com/langwatch/better-agents/commit/1567975d67fc43ac5eb3dd88b32ad4aee1387615))
+
+
+### Bug Fixes
+
+* better agents as the standard name ([eafabcb](https://github.com/langwatch/better-agents/commit/eafabcb2ac74c68fc8a6c803c2edd09a415e898b))
+* windows posix ([#68](https://github.com/langwatch/better-agents/issues/68)) ([a9bd869](https://github.com/langwatch/better-agents/commit/a9bd869ecdd1516aeb6880877ead7cf46d52b7f3))
+
+
+
+## [0.1.19](https://github.com/langwatch/better-agents/compare/v0.1.18...v0.1.19) (2025-12-04)
+
+
+### Features
+
+* add Antigravity coding assistant support ([#51](https://github.com/langwatch/better-agents/issues/51)) ([732bc2c](https://github.com/langwatch/better-agents/commit/732bc2c2d883a9c2e1f7557603c76590c7833574))
+* google adk ([#61](https://github.com/langwatch/better-agents/issues/61)) ([5900fef](https://github.com/langwatch/better-agents/commit/5900fef97a1ad74afce8de0181892d0d639c7333))
+
+
+### Bug Fixes
+
+* gitattributes ([74cbbb3](https://github.com/langwatch/better-agents/commit/74cbbb32469c68b0050c5f5afa36e388fc5ccc59))
+
 ## [0.1.18](https://github.com/langwatch/better-agents/compare/v0.1.17...v0.1.18) (2025-12-02)
 
 

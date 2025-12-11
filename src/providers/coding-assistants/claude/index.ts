@@ -43,7 +43,13 @@ export const ClaudeCodingAssistantProvider: CodingAssistantProvider = {
         cwd: projectPath,
       });
       logger.userSuccess("Session complete!");
-    } catch {
+    } catch (error) {
+      // Log to debug logger for troubleshooting
+      if (error instanceof Error) {
+        logger.error(error, { step: "claude-launch-failed" });
+      } else {
+        logger.debug("claude-launch-failed", { error: String(error) });
+      }
       logger.userWarning(`Could not auto-launch ${this.displayName}.`);
       showManualLaunchInstructions({
         targetPath,

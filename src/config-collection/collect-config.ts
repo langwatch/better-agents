@@ -227,7 +227,16 @@ export const collectConfig = async (
       }
     }
 
-    // Coding Assistant - use CLI option or prompt
+    logger.userInfo("To get your LangWatch API key, visit:");
+    logger.userInfo("https://app.langwatch.ai/authorize");
+
+    const langwatchApiKey = await password({
+      message:
+        "Enter your LangWatch API key (for prompt management, scenarios, evaluations and observability):",
+      mask: "*",
+      validate: validateLangWatchKey,
+    });
+
     const codingAssistant: CodingAssistant = cliOptions.codingAssistant || await select<CodingAssistant>({
       message:
         "What is your preferred coding assistant for building the agent?",
@@ -301,23 +310,27 @@ export const collectConfig = async (
       logger.userInfo("✔︎ Your coding assistant will finish setup later if needed\n");
     }
 
-    // LangWatch API Key - use CLI option or prompt
-    let langwatchApiKey: string;
-    if (cliOptions.langwatchKey) {
-      langwatchApiKey = cliOptions.langwatchKey;
-    } else {
-      logger.userInfo("To get your LangWatch API key, visit:");
-      logger.userInfo("https://app.langwatch.ai/authorize");
-
-      langwatchApiKey = await password({
-        message:
-          "Enter your LangWatch API key (for prompt management, scenarios, evaluations and observability):",
-        mask: "*",
-        validate: validateLangWatchKey,
-      });
+    // Check for Gemini API key if using Gemini CLI
+    if (codingAssistant === "gemini-cli") {
+      if (!process.env.GEMINI_API_KEY) {
+        logger.userInfo("When using Gemini API, you must specify the GEMINI_API_KEY environment variable.");
+        const geminiApiKey = await password({
+          message: "Enter your Gemini API key:",
+          mask: "*",
+          validate: (value) => {
+            if (!value || value.length < 5) {
+              return "API key is required and must be at least 5 characters";
+            }
+            return true;
+          },
+        });
+        process.env.GEMINI_API_KEY = geminiApiKey;
+        logger.userInfo("GEMINI_API_KEY has been set for this session.");
+      }
     }
 
-    // Project Goal - use CLI option or prompt
+    logger.userInfo("✔︎ Your coding assistant will finish setup later if needed\n");
+
     const projectGoal: string = cliOptions.goal || await input({
       message: "What is your agent going to do?",
       validate: validateProjectGoal,

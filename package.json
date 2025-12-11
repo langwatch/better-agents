@@ -1,6 +1,6 @@
 {
   "name": "@langwatch/better-agents",
-  "version": "0.1.18",
+  "version": "0.1.20",
   "description": "CLI for kicking off production-ready agent projects with LangWatch best practices",
   "type": "module",
   "main": "./dist/index.js",
@@ -77,8 +77,7 @@
     "commander": "^12.1.0",
     "ora": "^8.1.1",
     "pino": "^10.1.0",
-    "pino-pretty": "^13.1.2",
-    "posix": "^4.2.0"
+    "pino-pretty": "^13.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
