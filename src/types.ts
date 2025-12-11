@@ -31,6 +31,7 @@ export type ProjectConfig = {
 /**
  * CLI options for non-interactive mode.
  * When these are provided, the corresponding prompts are skipped.
+ * If all required options are provided, the CLI automatically runs in non-interactive mode.
  */
 export type CLIOptions = {
   language?: ProgrammingLanguage;
@@ -41,9 +42,7 @@ export type CLIOptions = {
   langwatchKey?: string;
   goal?: string;
   /** Additional inputs for providers that need them (e.g., AWS credentials for Bedrock) */
-  awsSecretKey?: string;
+  awsSecretAccessKey?: string;
   awsRegion?: string;
-  /** If true, all required options must be provided (no prompts) */
-  yes?: boolean;
 };
 

@@ -2,7 +2,10 @@ import type { LLMProviderProvider } from "../index.js";
 
 /**
  * AWS Bedrock LLM provider implementation.
- * Requires AWS credentials (access key, secret key, and region).
+ * Requires AWS credentials (access key ID, secret access key, and region).
+ *
+ * Note: The apiKey field is used for AWS Access Key ID to maintain consistency
+ * with other providers. The Secret Access Key is provided as an additional credential.
  */
 export const BedrockProvider: LLMProviderProvider = {
   id: "bedrock",
@@ -11,7 +14,7 @@ export const BedrockProvider: LLMProviderProvider = {
 
   additionalCredentials: [
     {
-      key: "awsSecretKey",
+      key: "awsSecretAccessKey",
       label: "AWS Secret Access Key",
       type: "password",
       validate: (value) => {
@@ -37,13 +40,14 @@ export const BedrockProvider: LLMProviderProvider = {
 
   getEnvVariables: ({ apiKey, additionalInputs }) => {
     const envVars = [
+      // apiKey is the AWS Access Key ID for Bedrock
       { key: "AWS_ACCESS_KEY_ID", value: apiKey },
     ];
 
-    if (additionalInputs?.awsSecretKey) {
+    if (additionalInputs?.awsSecretAccessKey) {
       envVars.push({
         key: "AWS_SECRET_ACCESS_KEY",
-        value: additionalInputs.awsSecretKey,
+        value: additionalInputs.awsSecretAccessKey,
       });
     }
 

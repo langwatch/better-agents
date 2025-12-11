@@ -17,35 +17,10 @@ import { getAllCodingAssistants } from "../providers/coding-assistants/index.js"
 import { validateOpenAIKey } from "./validators/openai-key.js";
 import { validateLangWatchKey } from "./validators/langwatch-key.js";
 import { validateProjectGoal } from "./validators/project-goal.js";
-
-/**
- * Validates that all required options are provided for non-interactive mode.
- * @param options - CLI options to validate
- * @throws Error if required options are missing
- */
-const validateNonInteractiveOptions = (options: CLIOptions): void => {
-  const missing: string[] = [];
-
-  if (!options.language) missing.push("--language");
-  if (!options.framework) missing.push("--framework");
-  if (!options.llmProvider) missing.push("--llm-provider");
-  if (!options.llmKey) missing.push("--llm-key");
-  if (!options.langwatchKey) missing.push("--langwatch-key");
-  if (!options.codingAssistant) missing.push("--coding-assistant");
-  if (!options.goal) missing.push("--goal");
-
-  // Check for Bedrock-specific requirements
-  if (options.llmProvider === "bedrock") {
-    if (!options.awsSecretKey) missing.push("--aws-secret-key");
-    if (!options.awsRegion) missing.push("--aws-region");
-  }
-
-  if (missing.length > 0) {
-    throw new Error(
-      `Non-interactive mode (--yes) requires all options. Missing: ${missing.join(", ")}`
-    );
-  }
-};
+import {
+  isNonInteractiveMode,
+  validateNonInteractiveOptions,
+} from "../utils/validate-cli-options.js";
 
 /**
  * Validates framework is compatible with language.
@@ -76,6 +51,7 @@ const validateFrameworkLanguage = (
 /**
  * Collects project configuration from user via interactive CLI prompts,
  * or uses provided CLI options for non-interactive mode.
+ * Non-interactive mode is automatically detected when all required options are provided.
  *
  * @param cliOptions - Optional CLI options for non-interactive mode
  * @returns Promise resolving to complete ProjectConfig
@@ -85,7 +61,7 @@ const validateFrameworkLanguage = (
  * // Interactive mode
  * const config = await collectConfig();
  *
- * // Non-interactive mode
+ * // Non-interactive mode (automatically detected)
  * const config = await collectConfig({
  *   language: 'python',
  *   framework: 'agno',
@@ -93,8 +69,7 @@ const validateFrameworkLanguage = (
  *   llmKey: 'sk-ant-...',
  *   langwatchKey: 'sk-lw-...',
  *   codingAssistant: 'claude-code',
- *   goal: 'Build an agent that...',
- *   yes: true
+ *   goal: 'Build an agent that...'
  * });
  * ```
  */
@@ -102,8 +77,8 @@ export const collectConfig = async (
   cliOptions: CLIOptions = {}
 ): Promise<ProjectConfig> => {
   try {
-    // If --yes flag is set, validate all required options are provided
-    if (cliOptions.yes) {
+    // Auto-detect non-interactive mode: if all required options are provided, skip prompts
+    if (isNonInteractiveMode(cliOptions)) {
       validateNonInteractiveOptions(cliOptions);
 
       // Validate framework/language compatibility
@@ -113,8 +88,8 @@ export const collectConfig = async (
       let llmAdditionalInputs: Record<string, string> | undefined;
       if (cliOptions.llmProvider === "bedrock") {
         llmAdditionalInputs = {
-          awsSecretKey: cliOptions.awsSecretKey!,
-          awsRegion: cliOptions.awsRegion!,
+          awsSecretAccessKey: cliOptions.awsSecretAccessKey!,
+          awsRegion: cliOptions.awsRegion || "us-east-1",
         };
       }
 
@@ -201,8 +176,8 @@ export const collectConfig = async (
 
       for (const credential of selectedProvider.additionalCredentials) {
         // Check if value was provided via CLI (for Bedrock)
-        if (credential.key === "awsSecretKey" && cliOptions.awsSecretKey) {
-          llmAdditionalInputs[credential.key] = cliOptions.awsSecretKey;
+        if (credential.key === "awsSecretAccessKey" && cliOptions.awsSecretAccessKey) {
+          llmAdditionalInputs[credential.key] = cliOptions.awsSecretAccessKey;
           continue;
         }
         if (credential.key === "awsRegion" && cliOptions.awsRegion) {

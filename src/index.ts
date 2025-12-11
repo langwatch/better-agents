@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import type { CLIOptions } from "./types.js";
+import { validateCLIOptions } from "./utils/validate-cli-options.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,16 +30,15 @@ program
     "Path to initialize the project (defaults to current directory)",
     "."
   )
-  .option("--language <language>", "Programming language (python, typescript)")
-  .option("--framework <framework>", "Agent framework (agno, mastra, langgraph-py, langgraph-ts)")
-  .option("--llm-provider <provider>", "LLM provider (openai, anthropic, gemini, bedrock, openrouter, grok)")
-  .option("--llm-key <key>", "LLM API key")
-  .option("--langwatch-key <key>", "LangWatch API key")
-  .option("--coding-assistant <assistant>", "Coding assistant (claude-code, cursor, antigravity, kilocode, none)")
-  .option("--goal <goal>", "Project goal - what the agent should do")
-  .option("--aws-secret-key <key>", "AWS Secret Access Key (for Bedrock provider)")
-  .option("--aws-region <region>", "AWS Region (for Bedrock provider)", "us-east-1")
-  .option("-y, --yes", "Non-interactive mode (requires all options to be provided)")
+  .option("--language <language>", "[required] Programming language: python, typescript")
+  .option("--framework <framework>", "[required] Agent framework: agno, mastra, langgraph-py, langgraph-ts")
+  .option("--llm-provider <provider>", "[required] LLM provider: openai, anthropic, gemini, bedrock, openrouter, grok")
+  .option("--llm-key <key>", "[required] LLM API key (for Bedrock: use AWS Access Key ID)")
+  .option("--langwatch-key <key>", "[required] LangWatch API key")
+  .option("--coding-assistant <assistant>", "[required] Coding assistant: claude-code, cursor, antigravity, kilocode, none")
+  .option("--goal <goal>", "[required] Project goal - what the agent should do")
+  .option("--aws-secret-access-key <key>", "[optional] AWS Secret Access Key (required for Bedrock provider)")
+  .option("--aws-region <region>", "[optional] AWS Region (for Bedrock provider)", "us-east-1")
   .action((path, options, command) => {
     // Get debug from parent command
     const debug = command.parent?.opts()?.debug || false;
@@ -52,10 +52,20 @@ program
       langwatchKey: options.langwatchKey,
       codingAssistant: options.codingAssistant,
       goal: options.goal,
-      awsSecretKey: options.awsSecretKey,
+      awsSecretAccessKey: options.awsSecretAccessKey,
       awsRegion: options.awsRegion,
-      yes: options.yes,
     };
+
+    // Validate enum values upfront with helpful error messages
+    try {
+      validateCLIOptions(cliOptions);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`\n${error.message}\n`);
+        process.exit(1);
+      }
+      throw error;
+    }
 
     return initCommand(path, cliOptions, debug);
   });

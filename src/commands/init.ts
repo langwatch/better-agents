@@ -67,10 +67,8 @@ export const initCommand = async (
   const logger = new LoggerFacade();
 
   try {
-    // Show banner (skip in fully non-interactive mode for cleaner output)
-    if (!cliOptions.yes) {
-      showBanner();
-    }
+    // Show banner
+    showBanner();
 
     const configTimer = logger.startTimer('config-collection');
     const config: ProjectConfig = await collectConfig(cliOptions);
