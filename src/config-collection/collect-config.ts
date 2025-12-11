@@ -84,18 +84,88 @@ export const collectConfig = async (
       // Validate framework/language compatibility
       validateFrameworkLanguage(cliOptions.language!, cliOptions.framework!);
 
-      // Build additional inputs for providers that need them (e.g., Bedrock)
-      let llmAdditionalInputs: Record<string, string> | undefined;
-      if (cliOptions.llmProvider === "bedrock") {
-        llmAdditionalInputs = {
-          awsSecretAccessKey: cliOptions.awsSecretAccessKey!,
-          awsRegion: cliOptions.awsRegion || "us-east-1",
-        };
+      // Read API keys from environment variables
+      const langwatchApiKey = process.env.LANGWATCH_API_KEY;
+      if (!langwatchApiKey) {
+        throw new Error(
+          `Missing required environment variable: LANGWATCH_API_KEY\n\n` +
+          `When using Better Agents, you must set the LANGWATCH_API_KEY environment variable.\n\n` +
+          `Get your LangWatch API key at: https://app.langwatch.ai/authorize`
+        );
       }
 
-      // Set GEMINI_API_KEY environment variable if using gemini-cli
-      if (cliOptions.codingAssistant === "gemini-cli" && cliOptions.geminiApiKey) {
-        process.env.GEMINI_API_KEY = cliOptions.geminiApiKey;
+      // Get LLM provider-specific API key from environment
+      const allProviders = getAllLLMProviders();
+      const selectedProvider = allProviders.find((p) => p.id === cliOptions.llmProvider);
+      
+      let llmApiKey: string;
+      let llmAdditionalInputs: Record<string, string> | undefined;
+
+      if (cliOptions.llmProvider === "openai") {
+        llmApiKey = process.env.OPENAI_API_KEY || "";
+        if (!llmApiKey) {
+          throw new Error(
+            `Missing required environment variable: OPENAI_API_KEY. See 'better-agents init --help' for setup.`
+          );
+        }
+      } else if (cliOptions.llmProvider === "anthropic") {
+        llmApiKey = process.env.ANTHROPIC_API_KEY || "";
+        if (!llmApiKey) {
+          throw new Error(
+            `Missing required environment variable: ANTHROPIC_API_KEY. See 'better-agents init --help' for setup.`
+          );
+        }
+      } else if (cliOptions.llmProvider === "gemini") {
+        llmApiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || "";
+        if (!llmApiKey) {
+          throw new Error(
+            `Missing required environment variable: GOOGLE_API_KEY or GEMINI_API_KEY. See 'better-agents init --help' for setup.`
+          );
+        }
+      } else if (cliOptions.llmProvider === "bedrock") {
+        llmApiKey = process.env.AWS_ACCESS_KEY_ID || "";
+        const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "";
+        const awsRegion = process.env.AWS_REGION || cliOptions.awsRegion || "us-east-1";
+        
+        if (!llmApiKey || !awsSecretAccessKey) {
+          const missing = [];
+          if (!llmApiKey) missing.push("AWS_ACCESS_KEY_ID");
+          if (!awsSecretAccessKey) missing.push("AWS_SECRET_ACCESS_KEY");
+          throw new Error(
+            `Missing required environment variable(s): ${missing.join(", ")}. See 'better-agents init --help' for setup.`
+          );
+        }
+        
+        llmAdditionalInputs = {
+          awsSecretAccessKey,
+          awsRegion,
+        };
+      } else if (cliOptions.llmProvider === "openrouter") {
+        llmApiKey = process.env.OPENROUTER_API_KEY || "";
+        if (!llmApiKey) {
+          throw new Error(
+            `Missing required environment variable: OPENROUTER_API_KEY. See 'better-agents init --help' for setup.`
+          );
+        }
+      } else if (cliOptions.llmProvider === "grok") {
+        llmApiKey = process.env.XAI_API_KEY || "";
+        if (!llmApiKey) {
+          throw new Error(
+            `Missing required environment variable: XAI_API_KEY. See 'better-agents init --help' for setup.`
+          );
+        }
+      } else {
+        throw new Error(`Unknown LLM provider: ${cliOptions.llmProvider}`);
+      }
+
+      // Check for Gemini API key if using gemini-cli coding assistant
+      if (cliOptions.codingAssistant === "gemini-cli") {
+        const geminiApiKey = process.env.GEMINI_API_KEY;
+        if (!geminiApiKey) {
+          throw new Error(
+            `Missing required environment variable: GEMINI_API_KEY. See 'better-agents init --help' for setup.`
+          );
+        }
       }
 
       // Return config directly without prompts
@@ -104,9 +174,9 @@ export const collectConfig = async (
         framework: cliOptions.framework!,
         codingAssistant: cliOptions.codingAssistant!,
         llmProvider: cliOptions.llmProvider!,
-        llmApiKey: cliOptions.llmKey!,
+        llmApiKey,
         llmAdditionalInputs,
-        langwatchApiKey: cliOptions.langwatchKey!,
+        langwatchApiKey,
         projectGoal: cliOptions.goal!,
       };
     }
@@ -146,11 +216,26 @@ export const collectConfig = async (
     const selectedProvider = allProviders.find((p) => p.id === llmProvider);
     const providerDisplayName = selectedProvider?.displayName || llmProvider;
 
-    // LLM API Key - use CLI option or prompt
-    let llmApiKey: string;
-    if (cliOptions.llmKey) {
-      llmApiKey = cliOptions.llmKey;
-    } else {
+    // LLM API Key - check environment variable first, then prompt
+    let llmApiKey: string | undefined;
+    
+    // Check for provider-specific env var
+    if (llmProvider === "openai") {
+      llmApiKey = process.env.OPENAI_API_KEY;
+    } else if (llmProvider === "anthropic") {
+      llmApiKey = process.env.ANTHROPIC_API_KEY;
+    } else if (llmProvider === "gemini") {
+      llmApiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
+    } else if (llmProvider === "bedrock") {
+      llmApiKey = process.env.AWS_ACCESS_KEY_ID;
+    } else if (llmProvider === "openrouter") {
+      llmApiKey = process.env.OPENROUTER_API_KEY;
+    } else if (llmProvider === "grok") {
+      llmApiKey = process.env.XAI_API_KEY;
+    }
+
+    // If not found in env, prompt for it
+    if (!llmApiKey) {
       if (selectedProvider?.apiKeyUrl) {
         logger.userInfo(`To get your ${providerDisplayName} API key, visit:`);
         logger.userInfo(`${selectedProvider.apiKeyUrl}`);
@@ -180,14 +265,20 @@ export const collectConfig = async (
       llmAdditionalInputs = {};
 
       for (const credential of selectedProvider.additionalCredentials) {
-        // Check if value was provided via CLI (for Bedrock)
-        if (credential.key === "awsSecretAccessKey" && cliOptions.awsSecretAccessKey) {
-          llmAdditionalInputs[credential.key] = cliOptions.awsSecretAccessKey;
-          continue;
+        // Check environment variables first
+        if (credential.key === "awsSecretAccessKey") {
+          const envValue = process.env.AWS_SECRET_ACCESS_KEY;
+          if (envValue) {
+            llmAdditionalInputs[credential.key] = envValue;
+            continue;
+          }
         }
-        if (credential.key === "awsRegion" && cliOptions.awsRegion) {
-          llmAdditionalInputs[credential.key] = cliOptions.awsRegion;
-          continue;
+        if (credential.key === "awsRegion") {
+          const envValue = process.env.AWS_REGION || cliOptions.awsRegion;
+          if (envValue) {
+            llmAdditionalInputs[credential.key] = envValue;
+            continue;
+          }
         }
 
         // Otherwise prompt
@@ -207,15 +298,20 @@ export const collectConfig = async (
       }
     }
 
-    logger.userInfo("To get your LangWatch API key, visit:");
-    logger.userInfo("https://app.langwatch.ai/authorize");
+    // LangWatch API Key - check environment variable first, then prompt
+    let langwatchApiKey = process.env.LANGWATCH_API_KEY;
+    
+    if (!langwatchApiKey) {
+      logger.userInfo("To get your LangWatch API key, visit:");
+      logger.userInfo("https://app.langwatch.ai/authorize");
 
-    const langwatchApiKey = await password({
-      message:
-        "Enter your LangWatch API key (for prompt management, scenarios, evaluations and observability):",
-      mask: "*",
-      validate: validateLangWatchKey,
-    });
+      langwatchApiKey = await password({
+        message:
+          "Enter your LangWatch API key (for prompt management, scenarios, evaluations and observability):",
+        mask: "*",
+        validate: validateLangWatchKey,
+      });
+    }
 
     const codingAssistant: CodingAssistant = cliOptions.codingAssistant || await select<CodingAssistant>({
       message:
@@ -292,11 +388,9 @@ export const collectConfig = async (
 
     // Check for Gemini API key if using Gemini CLI
     if (codingAssistant === "gemini-cli") {
-      // Check if provided via CLI first
-      if (cliOptions.geminiApiKey) {
-        process.env.GEMINI_API_KEY = cliOptions.geminiApiKey;
-      } else if (!process.env.GEMINI_API_KEY) {
-        logger.userInfo("When using Gemini API, you must specify the GEMINI_API_KEY environment variable.");
+      if (!process.env.GEMINI_API_KEY) {
+        logger.userInfo("When using Gemini CLI, you must specify the GEMINI_API_KEY environment variable.");
+        logger.userInfo("Get your Gemini API key at: https://aistudio.google.com/app/apikey");
         const geminiApiKey = await password({
           message: "Enter your Gemini API key:",
           mask: "*",

@@ -72,7 +72,19 @@ better-agents init .
 better-agents init my-awesome-agent
 ```
 
-The CLI will guide you through selecting your programming language, agent framework, coding assistant, LLM provider, and API keys.
+```bash
+# Non-interactive mode (pass all options; set API keys via env vars or .env)
+LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." better-agents init ./my-agent \
+  --language python \
+  --framework agno \
+  --llm-provider openai \
+  --coding-assistant cursor \
+  --goal "Build a trading agent"
+```
+
+For more provider-specific non-interactive examples, see `docs/USAGE.md`.
+
+The CLI will guide you through selecting your programming language, agent framework, coding assistant, and LLM provider. Configuration flags come from CLI options; secrets (API keys) can come from environment variables (or a .env file you load).
 
 ## Documentation
 
@@ -94,9 +106,35 @@ The CLI will guide you through selecting your programming language, agent framew
   - [Cursor](https://www.cursor.com/)
   - [Antigravity](https://antigravity.google/) (`agy`)
   - [Kilocode CLI](https://www.kilocode.ai/) (`kilocode`)
-- API Keys:
-  - Your chosen LLM Provider API key
+- API Keys (provided via environment variables):
   - LangWatch API key (get one at https://app.langwatch.ai/authorize)
+  - Your chosen LLM Provider API key
+
+## Environment Variables
+
+Better Agents uses environment variables for API keys. Set the following based on your chosen provider:
+
+### Required for all projects
+- `LANGWATCH_API_KEY` - Your LangWatch API key ([get it here](https://app.langwatch.ai/authorize))
+
+### LLM Provider API Keys (choose based on `--llm-provider`)
+- **OpenAI**: `OPENAI_API_KEY`
+- **Anthropic**: `ANTHROPIC_API_KEY`
+- **Gemini**: `GOOGLE_API_KEY` or `GEMINI_API_KEY`
+- **AWS Bedrock**: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` (optional)
+- **OpenRouter**: `OPENROUTER_API_KEY`
+- **Grok**: `XAI_API_KEY`
+
+### Coding Assistant Keys (only if needed)
+- **gemini-cli**: `GEMINI_API_KEY`
+
+### Examples
+
+```bash
+LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." better-agents init
+```
+
+For more provider-specific examples (Anthropic, Gemini, Bedrock, etc.), see the detailed usage guide in `docs/USAGE.md`.
 
 ## Resources
 

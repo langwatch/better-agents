@@ -99,6 +99,7 @@ export const validateCLIOptions = (options: CLIOptions): void => {
 
 /**
  * Checks if all required options are provided for non-interactive mode.
+ * API keys are now read from environment variables, not CLI options.
  *
  * @param options - CLI options to check
  * @returns true if all required options are provided (auto non-interactive mode)
@@ -110,37 +111,20 @@ export const validateCLIOptions = (options: CLIOptions): void => {
  * ```
  */
 export const isNonInteractiveMode = (options: CLIOptions): boolean => {
-  // Check core required fields
+  // Check core required fields (API keys are validated separately from env vars)
   const hasRequiredFields =
     !!options.language &&
     !!options.framework &&
     !!options.llmProvider &&
-    !!options.llmKey &&
-    !!options.langwatchKey &&
     !!options.codingAssistant &&
     !!options.goal;
 
-  // If not all required fields, definitely interactive
-  if (!hasRequiredFields) {
-    return false;
-  }
-
-  // If Bedrock provider, also need AWS Secret Access Key
-  // (llmKey is used as AWS Access Key ID for Bedrock)
-  if (options.llmProvider === "bedrock") {
-    return !!options.awsSecretAccessKey;
-  }
-
-  // If gemini-cli assistant, also need Gemini API key
-  if (options.codingAssistant === "gemini-cli") {
-    return !!options.geminiApiKey;
-  }
-
-  return true;
+  return hasRequiredFields;
 };
 
 /**
  * Validates that all required options are provided for non-interactive mode.
+ * API keys are validated separately from environment variables.
  *
  * @param options - CLI options to validate
  * @throws Error with list of missing options if incomplete
@@ -156,25 +140,12 @@ export const validateNonInteractiveOptions = (options: CLIOptions): void => {
   if (!options.language) missing.push("--language");
   if (!options.framework) missing.push("--framework");
   if (!options.llmProvider) missing.push("--llm-provider");
-  if (!options.llmKey) missing.push("--llm-key");
-  if (!options.langwatchKey) missing.push("--langwatch-key");
   if (!options.codingAssistant) missing.push("--coding-assistant");
   if (!options.goal) missing.push("--goal");
 
-  // Check for Bedrock-specific requirements
-  // Note: --llm-key is used as AWS Access Key ID for Bedrock
-  if (options.llmProvider === "bedrock") {
-    if (!options.awsSecretAccessKey) missing.push("--aws-secret-access-key");
-  }
-
-  // Check for gemini-cli-specific requirements
-  if (options.codingAssistant === "gemini-cli") {
-    if (!options.geminiApiKey) missing.push("--gemini-api-key");
-  }
-
   if (missing.length > 0) {
     throw new Error(
-      `Non-interactive mode requires all options. Missing: ${missing.join(", ")}`
+      `Non-interactive mode requires all options. Missing: ${missing.join(", ")}\n\nRun 'better-agents init --help' for usage information.`
     );
   }
 };

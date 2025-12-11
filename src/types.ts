@@ -38,13 +38,8 @@ export type CLIOptions = {
   framework?: AgentFramework;
   codingAssistant?: CodingAssistant;
   llmProvider?: LLMProvider;
-  llmKey?: string;
-  langwatchKey?: string;
   goal?: string;
-  /** Additional inputs for providers that need them (e.g., AWS credentials for Bedrock) */
-  awsSecretAccessKey?: string;
+  /** AWS Region for Bedrock provider (optional configuration, not a credential) */
   awsRegion?: string;
-  /** Gemini API key (required for gemini-cli coding assistant) */
-  geminiApiKey?: string;
 };
 
