@@ -72,30 +72,7 @@ better-agents init .
 better-agents init my-awesome-agent
 ```
 
-```bash
-# Non-interactive mode (pass all options; set API keys via env vars or .env)
-LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." better-agents init ./my-agent \
-  --language python \
-  --framework agno \
-  --llm-provider openai \
-  --coding-assistant cursor \
-  --goal "Build a trading agent"
-```
-
-For more provider-specific non-interactive examples, see `docs/USAGE.md`.
-
-The CLI will guide you through selecting your programming language, agent framework, coding assistant, and LLM provider. Configuration flags come from CLI options; secrets (API keys) can come from environment variables (or a .env file you load).
-
-## Documentation
-
-- **[Getting Started](docs/GETTING-STARTED.md)** - Quick start guide (2 minutes)
-- **[Walkthrough](docs/WALKTHROUGH.md)** - Detailed step-by-step guide
-- **[Project Structure](docs/STRUCTURE.md)** - Understanding the Better Agent structure
-- **[Features](docs/FEATURES.md)** - Key features and capabilities
-- **[Usage](docs/USAGE.md)** - CLI usage and examples
-- **[Philosophy](docs/PHILOSOPHY.md)** - Agent Testing Pyramid approach
-- **[Contributing](docs/CONTRIBUTING.md)** - How to contribute to Better Agents
-- **[Changelog](CHANGELOG.md)** - Version history
+The CLI will guide you through selecting your programming language, agent framework, coding assistant, LLM provider, and API keys.
 
 ## Requirements
 
@@ -106,7 +83,7 @@ The CLI will guide you through selecting your programming language, agent framew
   - [Cursor](https://www.cursor.com/)
   - [Antigravity](https://antigravity.google/) (`agy`)
   - [Kilocode CLI](https://www.kilocode.ai/) (`kilocode`)
-- API Keys (provided via environment variables):
+- API Keys:
   - LangWatch API key (get one at https://app.langwatch.ai/authorize)
   - Your chosen LLM Provider API key
 
