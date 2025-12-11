@@ -31,14 +31,15 @@ program
     "."
   )
   .option("--language <language>", "[required] Programming language: python, typescript")
-  .option("--framework <framework>", "[required] Agent framework: agno, mastra, langgraph-py, langgraph-ts")
+  .option("--framework <framework>", "[required] Agent framework: agno, mastra, langgraph-py, langgraph-ts, google-adk, vercel-ai")
   .option("--llm-provider <provider>", "[required] LLM provider: openai, anthropic, gemini, bedrock, openrouter, grok")
   .option("--llm-key <key>", "[required] LLM API key (for Bedrock: use AWS Access Key ID)")
   .option("--langwatch-key <key>", "[required] LangWatch API key")
-  .option("--coding-assistant <assistant>", "[required] Coding assistant: claude-code, cursor, antigravity, kilocode, none")
+  .option("--coding-assistant <assistant>", "[required] Coding assistant: claude-code, cursor, antigravity, kilocode, crush, gemini-cli, qwen-code, none")
   .option("--goal <goal>", "[required] Project goal - what the agent should do")
   .option("--aws-secret-access-key <key>", "[optional] AWS Secret Access Key (required for Bedrock provider)")
   .option("--aws-region <region>", "[optional] AWS Region (for Bedrock provider)", "us-east-1")
+  .option("--gemini-api-key <key>", "[optional] Gemini API key (required for gemini-cli coding assistant)")
   .action((path, options, command) => {
     // Get debug from parent command
     const debug = command.parent?.opts()?.debug || false;
@@ -54,6 +55,7 @@ program
       goal: options.goal,
       awsSecretAccessKey: options.awsSecretAccessKey,
       awsRegion: options.awsRegion,
+      geminiApiKey: options.geminiApiKey,
     };
 
     // Validate enum values upfront with helpful error messages

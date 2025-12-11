@@ -44,5 +44,7 @@ export type CLIOptions = {
   /** Additional inputs for providers that need them (e.g., AWS credentials for Bedrock) */
   awsSecretAccessKey?: string;
   awsRegion?: string;
+  /** Gemini API key (required for gemini-cli coding assistant) */
+  geminiApiKey?: string;
 };
 

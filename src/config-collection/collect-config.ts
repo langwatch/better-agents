@@ -32,8 +32,8 @@ const validateFrameworkLanguage = (
   language: ProgrammingLanguage,
   framework: AgentFramework
 ): void => {
-  const pythonFrameworks: AgentFramework[] = ["agno", "langgraph-py"];
-  const typescriptFrameworks: AgentFramework[] = ["mastra", "langgraph-ts"];
+  const pythonFrameworks: AgentFramework[] = ["agno", "langgraph-py", "google-adk"];
+  const typescriptFrameworks: AgentFramework[] = ["mastra", "langgraph-ts", "vercel-ai"];
 
   if (language === "python" && !pythonFrameworks.includes(framework)) {
     throw new Error(
@@ -91,6 +91,11 @@ export const collectConfig = async (
           awsSecretAccessKey: cliOptions.awsSecretAccessKey!,
           awsRegion: cliOptions.awsRegion || "us-east-1",
         };
+      }
+
+      // Set GEMINI_API_KEY environment variable if using gemini-cli
+      if (cliOptions.codingAssistant === "gemini-cli" && cliOptions.geminiApiKey) {
+        process.env.GEMINI_API_KEY = cliOptions.geminiApiKey;
       }
 
       // Return config directly without prompts
@@ -287,7 +292,10 @@ export const collectConfig = async (
 
     // Check for Gemini API key if using Gemini CLI
     if (codingAssistant === "gemini-cli") {
-      if (!process.env.GEMINI_API_KEY) {
+      // Check if provided via CLI first
+      if (cliOptions.geminiApiKey) {
+        process.env.GEMINI_API_KEY = cliOptions.geminiApiKey;
+      } else if (!process.env.GEMINI_API_KEY) {
         logger.userInfo("When using Gemini API, you must specify the GEMINI_API_KEY environment variable.");
         const geminiApiKey = await password({
           message: "Enter your Gemini API key:",

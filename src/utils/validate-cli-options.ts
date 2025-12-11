@@ -15,12 +15,17 @@ const VALID_FRAMEWORKS: readonly AgentFramework[] = [
   "mastra",
   "langgraph-py",
   "langgraph-ts",
+  "google-adk",
+  "vercel-ai",
 ];
 const VALID_CODING_ASSISTANTS: readonly CodingAssistant[] = [
   "claude-code",
   "cursor",
   "antigravity",
   "kilocode",
+  "crush",
+  "gemini-cli",
+  "qwen-code",
   "none",
 ];
 const VALID_LLM_PROVIDERS: readonly LLMProvider[] = [
@@ -126,6 +131,11 @@ export const isNonInteractiveMode = (options: CLIOptions): boolean => {
     return !!options.awsSecretAccessKey;
   }
 
+  // If gemini-cli assistant, also need Gemini API key
+  if (options.codingAssistant === "gemini-cli") {
+    return !!options.geminiApiKey;
+  }
+
   return true;
 };
 
@@ -155,6 +165,11 @@ export const validateNonInteractiveOptions = (options: CLIOptions): void => {
   // Note: --llm-key is used as AWS Access Key ID for Bedrock
   if (options.llmProvider === "bedrock") {
     if (!options.awsSecretAccessKey) missing.push("--aws-secret-access-key");
+  }
+
+  // Check for gemini-cli-specific requirements
+  if (options.codingAssistant === "gemini-cli") {
+    if (!options.geminiApiKey) missing.push("--gemini-api-key");
   }
 
   if (missing.length > 0) {
