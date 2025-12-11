@@ -5,6 +5,18 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.20](https://github.com/langwatch/better-agents/compare/v0.1.20...v0.1.20) (2025-12-11)
+
+
+### Features
+
+* add non-interactive mode with CLI options ([#77](https://github.com/langwatch/better-agents/issues/77)) ([0ff5bd1](https://github.com/langwatch/better-agents/commit/0ff5bd1c74782ba6b808ac415906e666cf368552))
+
+
+### Miscellaneous
+
+* release v0.1.20 ([c799e6c](https://github.com/langwatch/better-agents/commit/c799e6cfc81120bf1f43848b44d272587967a7be))
+
 ## [0.1.20](https://github.com/langwatch/better-agents/compare/v0.1.19...v0.1.20) (2025-12-09)
 
 
