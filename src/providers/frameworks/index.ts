@@ -5,6 +5,7 @@ import { LangGraphPyFrameworkProvider } from "./langgraph-py/index.js";
 import { LangGraphTSFrameworkProvider } from "./langgraph-ts/index.js";
 import { GoogleAdkFrameworkProvider } from "./google-adk/index.js";
 import { VercelAIFrameworkProvider } from "./vercel-ai/index.js";
+import { LettaPyFrameworkProvider } from "./letta-py/index.js";
 
 export type MCPServerConfig =
   | {
@@ -63,6 +64,7 @@ const PROVIDERS: Record<string, FrameworkProvider> = {
   "langgraph-ts": LangGraphTSFrameworkProvider,
   "google-adk": GoogleAdkFrameworkProvider,
   "vercel-ai": VercelAIFrameworkProvider,
+    "letta-py": LettaPyFrameworkProvider,
 };
 
 /**
