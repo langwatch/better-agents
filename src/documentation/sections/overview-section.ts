@@ -30,6 +30,8 @@ export const buildOverviewSection = ({ config }: { config: ProjectConfig }): str
     ? 'LangGraph (TypeScript)'
     : framework === 'google-adk'
     ? 'Google ADK'
+    : framework === 'vercel-ai'
+    ? 'Vercel AI SDK'
     : 'Mastra'
 }
 **Language:** ${language === 'python' ? 'Python' : 'TypeScript'}
