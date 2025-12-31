@@ -77,6 +77,7 @@ const validateFrameworkLanguage = (
 export const collectConfig = async (
   cliOptions: CLIOptions = {}
 ): Promise<ProjectConfig> => {
+  const configStart = Date.now();
   try {
     // Auto-detect non-interactive mode: if all required options are provided, skip prompts
     if (isNonInteractiveMode(cliOptions)) {
@@ -233,19 +234,6 @@ export const collectConfig = async (
       llmApiKey = process.env.XAI_API_KEY;
     }
 
-    const llmApiKey = await password({
-      message: `Enter your ${providerDisplayName} API key:`,
-      mask: "*",
-      validate:
-        llmProvider === "openai"
-          ? validateOpenAIKey
-          : (value: string) => {
-              if (!value || value.length < 5) {
-                return "API key is required and must be at least 5 characters";
-              }
-              return true;
-            },
-    });
     // If not found in env, prompt for it
     if (!llmApiKey) {
       if (selectedProvider?.apiKeyUrl) {
