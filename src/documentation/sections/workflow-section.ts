@@ -101,6 +101,8 @@ The MCP will provide up-to-date documentation and examples. For Scenario specifi
       ? '- **LangGraph.js Documentation**: Use the LangGraph MCP for up-to-date docs'
       : config.framework === 'google-adk'
       ? '- **Google ADK Documentation**: Use the Google ADK MCP for up-to-date docs'
+      : config.framework === 'vercel-ai'
+      ? '- **AI SDK Documentation**: Use the AI SDK MCP for up-to-date docs'
       : '- **Mastra Documentation**: Use the Mastra MCP for up-to-date docs'}
 
 ---

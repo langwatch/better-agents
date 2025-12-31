@@ -28,3 +28,18 @@ export type ProjectConfig = {
   projectGoal: string;
 };
 
+/**
+ * CLI options for non-interactive mode.
+ * When these are provided, the corresponding prompts are skipped.
+ * If all required options are provided, the CLI automatically runs in non-interactive mode.
+ */
+export type CLIOptions = {
+  language?: ProgrammingLanguage;
+  framework?: AgentFramework;
+  codingAssistant?: CodingAssistant;
+  llmProvider?: LLMProvider;
+  goal?: string;
+  /** AWS Region for Bedrock provider (optional configuration, not a credential) */
+  awsRegion?: string;
+};
+

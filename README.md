@@ -95,8 +95,8 @@ The CLI will guide you through selecting your programming language, agent framew
   - [Antigravity](https://antigravity.google/) (`agy`)
   - [Kilocode CLI](https://www.kilocode.ai/) (`kilocode`)
 - API Keys:
-  - Your chosen LLM Provider API key
   - LangWatch API key (get one at https://app.langwatch.ai/authorize)
+  - Your chosen LLM Provider API key
 
 ## Resources
 

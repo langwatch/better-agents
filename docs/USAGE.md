@@ -2,39 +2,128 @@
 
 ## Initialize a new project
 
-```bash
-# In current directory
-better-agents init .
+Better Agents supports two modes of operation:
 
-# In a new directory
+### Interactive Mode
+
+```bash
 better-agents init my-awesome-agent
 ```
 
-The CLI will guide you through:
+### Non-Interactive Mode
+Provide all configuration via CLI options and environment variables.
 
-1. **Programming Language**: Python or TypeScript
-2. **Agent Framework**: Agno (Python) or Mastra (TypeScript)
-3. **Coding Assistant**: Claude Code, Cursor, Antigravity, Kilocode CLI, or None (manual prompt)
-4. **LLM Provider**: OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, or Grok
-5. **API Keys**: LLM Provider and LangWatch
-6. **Project Goal**: What you want to build
+```bash
+LANGWATCH_API_KEY="sk-lw-..." ANTHROPIC_API_KEY="sk-ant-..." better-agents init my-agent \
+  --language python --framework agno --llm-provider anthropic \
+  --coding-assistant cursor --goal "Build a trading agent"
+```
+
+The CLI configuration includes:
+
+1. **Programming Language**: Python or TypeScript (`--language`)
+2. **Agent Framework**: Agno, Mastra, LangGraph, Google ADK, Vercel AI (`--framework`)
+3. **Coding Assistant**: Claude Code, Cursor, Antigravity, Kilocode CLI, or None (`--coding-assistant`)
+4. **LLM Provider**: OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, or Grok (`--llm-provider`)
+5. **API Keys**: Provided via environment variables (see below)
+6. **Project Goal**: What you want to build (`--goal`)
+
+## Environment Variables
+
+API keys are provided via environment variables, not CLI arguments. This follows security best practices and scales better with multiple providers.
+
+### Required for All Projects
+- `LANGWATCH_API_KEY` - Get it at https://app.langwatch.ai/authorize
+
+### LLM Provider API Keys
+Set the appropriate variable based on your `--llm-provider` choice:
+
+| Provider | Environment Variable(s) | Get API Key |
+|----------|------------------------|-------------|
+| `openai` | `OPENAI_API_KEY` | https://platform.openai.com/api-keys |
+| `anthropic` | `ANTHROPIC_API_KEY` | https://console.anthropic.com/settings/keys |
+| `gemini` | `GOOGLE_API_KEY` or `GEMINI_API_KEY` | https://aistudio.google.com/app/apikey |
+| `bedrock` | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` (optional) | https://console.aws.amazon.com/iam/home#/security_credentials |
+| `openrouter` | `OPENROUTER_API_KEY` | https://openrouter.ai/keys |
+| `grok` | `XAI_API_KEY` | https://console.x.ai/team |
+
+### Coding Assistant API Keys
+Only required if using specific assistants:
+
+| Assistant | Environment Variable | Get API Key |
+|-----------|---------------------|-------------|
+| `gemini-cli` | `GEMINI_API_KEY` | https://aistudio.google.com/app/apikey |
 
 ## Examples
 
-### Python + Agno
+### Interactive Mode Examples
 
+#### Python + Agno + OpenAI
 ```bash
-better-agents init trading-agent
-# Select: Python, Agno, your preferred coding assistant, OpenAI
-# Goal: "Build an agent that can analyze stock prices and provide trading recommendations"
+LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." better-agents init trading-agent
+# CLI will prompt for: language, framework, coding assistant, goal
 ```
 
-### TypeScript + Mastra
-
+#### TypeScript + Mastra + Anthropic
 ```bash
-better-agents init customer-support
-# Select: TypeScript, Mastra, your preferred coding assistant, OpenAI
-# Goal: "Build a customer support agent that can handle common queries and escalate complex issues"
+LANGWATCH_API_KEY="sk-lw-..." ANTHROPIC_API_KEY="sk-ant-..." better-agents init customer-support
+# CLI will prompt for: language, framework, coding assistant, goal
+```
+
+#### AWS Bedrock
+```bash
+LANGWATCH_API_KEY="sk-lw-..." \
+AWS_ACCESS_KEY_ID="AKIA..." \
+AWS_SECRET_ACCESS_KEY="..." \
+AWS_REGION="us-east-1" \
+better-agents init my-agent
+# CLI will prompt for: language, framework, coding assistant, goal
+```
+
+### Non-Interactive Mode Examples
+
+#### Complete Python Project with Agno
+```bash
+LANGWATCH_API_KEY="sk-lw-..." OPENAI_API_KEY="sk-..." better-agents init trading-agent \
+  --language python \
+  --framework agno \
+  --llm-provider openai \
+  --coding-assistant cursor \
+  --goal "Build an agent that can analyze stock prices and provide trading recommendations"
+```
+
+#### TypeScript + Mastra + Claude
+```bash
+LANGWATCH_API_KEY="sk-lw-..." ANTHROPIC_API_KEY="sk-ant-..." better-agents init customer-support \
+  --language typescript \
+  --framework mastra \
+  --llm-provider anthropic \
+  --coding-assistant claude-code \
+  --goal "Build a customer support agent that can handle common queries and escalate complex issues"
+```
+
+#### LangGraph Python + Gemini
+```bash
+LANGWATCH_API_KEY="sk-lw-..." GOOGLE_API_KEY="..." better-agents init research-agent \
+  --language python \
+  --framework langgraph-py \
+  --llm-provider gemini \
+  --coding-assistant cursor \
+  --goal "Build a research agent that can gather and summarize information from multiple sources"
+```
+
+#### AWS Bedrock Non-Interactive
+```bash
+LANGWATCH_API_KEY="sk-lw-..." \
+AWS_ACCESS_KEY_ID="AKIA..." \
+AWS_SECRET_ACCESS_KEY="..." \
+better-agents init my-agent \
+  --language typescript \
+  --framework vercel-ai \
+  --llm-provider bedrock \
+  --aws-region us-west-2 \
+  --coding-assistant cursor \
+  --goal "Build a content generation agent"
 ```
 
 ### Coding Assistant Auto-Launch
