@@ -5,6 +5,29 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.22](https://github.com/langwatch/better-agents/compare/v0.1.20...v0.1.22) (2026-01-13)
+
+
+### Features
+
+* add non-interactive mode with CLI options ([#77](https://github.com/langwatch/better-agents/issues/77)) ([0ff5bd1](https://github.com/langwatch/better-agents/commit/0ff5bd1c74782ba6b808ac415906e666cf368552))
+* telemetery ([#74](https://github.com/langwatch/better-agents/issues/74)) ([2c9a4d5](https://github.com/langwatch/better-agents/commit/2c9a4d54bf19acd29a20289585c3e66e199ce1b7))
+
+
+### Bug Fixes
+
+* add missing AI SDK framework option in documentation generation ([#80](https://github.com/langwatch/better-agents/issues/80)) ([5d3ee08](https://github.com/langwatch/better-agents/commit/5d3ee08cf3f7425c8aa6519a30e3293fa23489bc))
+* add missing Vercel AI SDK framework option in documentation generation ([5d3ee08](https://github.com/langwatch/better-agents/commit/5d3ee08cf3f7425c8aa6519a30e3293fa23489bc))
+
+
+### Miscellaneous
+
+* **main:** release 0.1.20 ([69f1d4a](https://github.com/langwatch/better-agents/commit/69f1d4a6938dfc1790bee1f2505cc721445faa08))
+* **main:** release 0.1.21 ([#73](https://github.com/langwatch/better-agents/issues/73)) ([69f1d4a](https://github.com/langwatch/better-agents/commit/69f1d4a6938dfc1790bee1f2505cc721445faa08))
+* release 0.1.22 ([f8285e6](https://github.com/langwatch/better-agents/commit/f8285e6d783bf7bd1d212386b91c2b70a63793a2))
+* release v0.1.20 ([c799e6c](https://github.com/langwatch/better-agents/commit/c799e6cfc81120bf1f43848b44d272587967a7be))
+* release v0.1.21 ([101ded4](https://github.com/langwatch/better-agents/commit/101ded4a5ab71ae9e8f5d6d40c01ff32cca50019))
+
 ## [0.1.20](https://github.com/langwatch/better-agents/compare/v0.1.20...v0.1.20) (2025-12-11)
 
 
