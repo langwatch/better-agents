@@ -1,4 +1,4 @@
-name: Release Please
+name: release-please
 
 on:
   push:
@@ -7,46 +7,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  issues: write # This is important for label creation
   contents: write
   pull-requests: write
-  id-token: write # Required for OIDC publishing in called workflow
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    outputs:
-      # Don't use release_created this: https://danwakeem.medium.com/beware-the-release-please-v4-github-action-ee71ff9de151
-      # releases_created: ${{ steps.release.outputs.releases_created }}
-      # paths_released: ${{ steps.release.outputs.paths_released }}
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          # Use manifest mode for monorepo
+          # Use a PAT so that the created releases trigger downstream
+          # workflows (release: published). The default GITHUB_TOKEN does
+          # not trigger other workflows — this is a GitHub limitation.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
-
-  # Debug job to echo release-please outputs
-  debug-outputs:
-    needs: release-please
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo outputs
-        shell: bash
-        env:
-          RELEASE_OUTPUTS: ${{ toJSON(needs.release-please.outputs) }}
-        run: |
-          echo "All release-please outputs:"
-          printf '%s\n' "$RELEASE_OUTPUTS"
-
-  # Call the Release workflow as a job
-  trigger-publish:
-    if: ${{ needs.release-please.outputs.release_created }}
-    needs: release-please
-    uses: ./.github/workflows/publish.yml

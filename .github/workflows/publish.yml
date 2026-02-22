@@ -4,7 +4,6 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-  workflow_call:
 
 permissions:
   id-token: write
@@ -43,8 +42,7 @@ jobs:
     needs: check
     if: |
       (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'v')) ||
-      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'workflow_call')
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
