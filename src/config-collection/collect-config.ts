@@ -1,4 +1,5 @@
 import { select, input, password, confirm } from "@inquirer/prompts";
+import { textarea } from "./prompts/textarea.js";
 import { spawn } from "child_process";
 import type {
   ProjectConfig,
@@ -408,7 +409,7 @@ export const collectConfig = async (
 
     logger.userInfo("✔︎ Your coding assistant will finish setup later if needed\n");
 
-    const projectGoal: string = cliOptions.goal || await input({
+    const projectGoal: string = cliOptions.goal || await textarea({
       message: "What is your agent going to do?",
       validate: validateProjectGoal,
     });
