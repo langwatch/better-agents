@@ -5,6 +5,13 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.23](https://github.com/langwatch/better-agents/compare/v0.1.22...v0.1.23) (2026-02-22)
+
+
+### Features
+
+* pass LANGWATCH_API_KEY to MCP server config ([#84](https://github.com/langwatch/better-agents/issues/84)) ([8ab576e](https://github.com/langwatch/better-agents/commit/8ab576ecc12eca6d1da3526983f04212d857ca6a))
+
 ## [0.1.22](https://github.com/langwatch/better-agents/compare/v0.1.20...v0.1.22) (2026-01-13)
 
 
