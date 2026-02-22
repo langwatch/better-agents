@@ -237,15 +237,18 @@ export async function textarea(config: TextareaConfig): Promise<string> {
 
         const ch = str[i]!;
 
-        if (ch === "\r" || ch === "\n") {
+        if (ch === "\r") {
           if (isPasting) {
             insertText("\n");
           } else {
-            // Submit
+            // Enter (\r) = submit
             render();
             void submit();
             return;
           }
+        } else if (ch === "\n") {
+          // Shift+Enter (\n) or newline during paste
+          insertText("\n");
         } else if (ch === "\x7f" || ch === "\x08") {
           // Backspace
           handleBackspace();
