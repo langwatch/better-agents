@@ -23,7 +23,7 @@ export async function textarea(config: TextareaConfig): Promise<string> {
     stdin.setRawMode(true);
     stdin.resume();
 
-    let lines: string[] = [""];
+    const lines: string[] = [""];
     let cursorLine = 0;
     let cursorCol = 0;
     let isPasting = false;
@@ -183,6 +183,7 @@ export async function textarea(config: TextareaConfig): Promise<string> {
         }
         // Arrow keys and other CSI sequences
         if (str.startsWith("\x1b[", i)) {
+          // eslint-disable-next-line no-control-regex
           const seqMatch = str.slice(i).match(/^\x1b\[[0-9;]*[A-Za-z~]/);
           if (seqMatch) {
             const seq = seqMatch[0];
