@@ -28,6 +28,9 @@ export const buildMCPConfig = ({
   mcpConfig.mcpServers.langwatch = {
     command: "npx",
     args: ["-y", "@langwatch/mcp-server"],
+    env: {
+      LANGWATCH_API_KEY: config.langwatchApiKey,
+    },
   };
 
   // Add framework-specific MCP if available

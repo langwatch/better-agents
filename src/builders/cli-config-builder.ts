@@ -86,7 +86,7 @@ export const setupCLIConfigs = async ({
     for (const [key, server] of Object.entries(mcpConfig.mcpServers)) {
       if (typeof server === "object" && server !== null) {
         // If it already has a type, use it; otherwise default to "stdio"
-        const serverConfig = server as { type?: string; command?: string; args?: string[]; transport?: string; url?: string };
+        const serverConfig = server as { type?: string; command?: string; args?: string[]; env?: Record<string, string>; transport?: string; url?: string };
         
         if ("type" in serverConfig && serverConfig.type === "http") {
           // HTTP transport
@@ -97,11 +97,15 @@ export const setupCLIConfigs = async ({
           };
         } else {
           // stdio transport (default)
-          crushMCP[key] = {
+          const stdioConfig: Record<string, unknown> = {
             type: "stdio",
             command: serverConfig.command,
             args: serverConfig.args || [],
           };
+          if (serverConfig.env) {
+            stdioConfig.env = serverConfig.env;
+          }
+          crushMCP[key] = stdioConfig;
         }
       }
     }

@@ -15,6 +15,7 @@ export type MCPConfigFile = {
         type?: "stdio";
         command: string;
         args?: string[];
+        env?: Record<string, string>;
       }
     | {
         type: "http";

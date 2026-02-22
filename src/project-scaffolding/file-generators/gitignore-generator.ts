@@ -30,6 +30,10 @@ build/
 
 # Better Agents
 .better-agents/
+
+# MCP config (contains API keys, use .mcp.json.example as template)
+.mcp.json
+.cursor/mcp.json
 `;
 
 /**
@@ -63,6 +67,16 @@ export const ensureGitignore = async ({
       const appendContent = `
 # Better Agents
 .better-agents/
+`;
+      await fs.appendFile(gitignorePath, appendContent);
+    }
+
+    // Check if .mcp.json is already ignored
+    if (!existingContent.includes(".mcp.json")) {
+      const appendContent = `
+# MCP config (contains API keys, use .mcp.json.example as template)
+.mcp.json
+.cursor/mcp.json
 `;
       await fs.appendFile(gitignorePath, appendContent);
     }

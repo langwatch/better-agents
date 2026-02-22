@@ -32,7 +32,7 @@ export const buildInitialPrompt = ({
 First steps:
 1. Read and understand the AGENTS.md file - it contains all the guidelines for this project
 2. Update the AGENTS.md with specific details about what this project does
-3. Create a comprehensive README.md explaining the project, setup, and usage
+3. Create a comprehensive README.md explaining the project, setup, and usage. Include instructions for new developers to copy .env.example to .env and .mcp.json.example to .mcp.json, filling in their own API keys
 4. Set up the ${languageKnowledge.setupInstructions}
 5. ${frameworkKnowledge.toolingInstructions}
 6. Execute any installation steps needed yourself, for the library dependencies, the CLI tools, etc

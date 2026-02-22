@@ -39,6 +39,17 @@ export const setupEditorConfigs = async ({
   const mcpConfigPath = path.join(projectPath, ".mcp.json");
   await fs.writeFile(mcpConfigPath, JSON.stringify(mcpConfig, null, 2));
 
+  // 1b. Write .mcp.json.example with placeholder API key (committed to git)
+  const mcpConfigExample = JSON.parse(JSON.stringify(mcpConfig)) as MCPConfigFile;
+  if (mcpConfigExample.mcpServers.langwatch && "env" in mcpConfigExample.mcpServers.langwatch) {
+    const langwatch = mcpConfigExample.mcpServers.langwatch as { env?: Record<string, string> };
+    if (langwatch.env?.LANGWATCH_API_KEY) {
+      langwatch.env.LANGWATCH_API_KEY = "your_langwatch_api_key_here";
+    }
+  }
+  const mcpExamplePath = path.join(projectPath, ".mcp.json.example");
+  await fs.writeFile(mcpExamplePath, JSON.stringify(mcpConfigExample, null, 2));
+
   // 2. Create .cursor directory and symlink to root .mcp.json
   const cursorDir = path.join(projectPath, ".cursor");
   await fs.mkdir(cursorDir, { recursive: true });
