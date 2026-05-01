@@ -80,6 +80,15 @@
     "pino-pretty": "^13.1.2",
     "posthog-node": "^4.13.0"
   },
+  "pnpm": {
+    "overrides": {
+      "picomatch": ">=4.0.4",
+      "flatted": ">=3.4.2",
+      "minimatch": ">=9.0.7",
+      "rollup": ">=4.59.0",
+      "axios": ">=1.13.5"
+    }
+  },
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
