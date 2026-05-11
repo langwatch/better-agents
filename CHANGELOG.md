@@ -5,6 +5,16 @@ All notable changes to Better Agents will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.24](https://github.com/langwatch/better-agents/compare/v0.1.23...v0.1.24) (2026-05-11)
+
+
+### Bug Fixes
+
+* patch fast-uri to &gt;=3.1.2 for path traversal and host confusion vulnerabilities ([#92](https://github.com/langwatch/better-agents/issues/92)) ([00c44b9](https://github.com/langwatch/better-agents/commit/00c44b92fafc245fa051a34910128e36e85aad07))
+* patch vulnerable transitive dependencies ([#90](https://github.com/langwatch/better-agents/issues/90)) ([de5b725](https://github.com/langwatch/better-agents/commit/de5b72568828ed8f34f3e2d87a82dc6714f46fac))
+* patch vulnerable transitive dependencies via pnpm overrides ([de5b725](https://github.com/langwatch/better-agents/commit/de5b72568828ed8f34f3e2d87a82dc6714f46fac))
+* use PAT for release-please to trigger publish workflow ([#86](https://github.com/langwatch/better-agents/issues/86)) ([130fdf1](https://github.com/langwatch/better-agents/commit/130fdf15a07be2cce0ff266b0e8163e551eff928))
+
 ## [0.1.23](https://github.com/langwatch/better-agents/compare/v0.1.22...v0.1.23) (2026-02-22)
 
 
