@@ -86,7 +86,8 @@
       "flatted": ">=3.4.2",
       "minimatch": ">=9.0.7",
       "rollup": ">=4.59.0",
-      "axios": ">=1.13.5"
+      "axios": ">=1.13.5",
+      "fast-uri": ">=3.1.2"
     }
   },
   "devDependencies": {
